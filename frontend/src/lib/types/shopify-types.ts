@@ -53,6 +53,16 @@ export interface ShopifyProduct {
   options: ShopifyOption[];
 }
 
+export interface ShopifyCollection {
+  handle: string;
+  title: string;
+  updated_at: string;
+  body_html: string;
+  published_at: string;
+  sort_order: string;
+  products_count: number;
+}
+
 export interface ShopifyProductsResponse {
   products: ShopifyProduct[];
 }

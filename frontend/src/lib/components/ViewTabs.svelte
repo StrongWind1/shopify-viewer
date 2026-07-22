@@ -30,8 +30,9 @@
   ];
 </script>
 
-<nav
+<div
   class="flex gap-1 overflow-x-auto border-b border-gray-200 dark:border-gray-700"
+  role="tablist"
   aria-label="View tabs"
 >
   {#each tabs as tab (tab.id)}
@@ -53,4 +54,4 @@
       <span class="hidden sm:inline">{tab.label}</span>
     </button>
   {/each}
-</nav>
+</div>

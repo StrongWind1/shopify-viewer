@@ -1,5 +1,6 @@
 import type {
   ShopifyProduct,
+  ShopifyCollection,
   ShopifyMeta,
   RecentStore,
   AppState,
@@ -17,6 +18,7 @@ const MAX_RECENT = 20;
 const STORAGE_KEY = "shopify-viewer-recent";
 
 let products = $state<ShopifyProduct[]>([]);
+let collections = $state<ShopifyCollection[]>([]);
 let meta = $state<ShopifyMeta | null>(null);
 let domain = $state("");
 let appState = $state<AppState>({ status: "idle" });
@@ -99,6 +101,9 @@ export const store = {
   get products() {
     return products;
   },
+  get collections() {
+    return collections;
+  },
   get meta() {
     return meta;
   },
@@ -133,6 +138,9 @@ export const store = {
   appendProducts(p: ShopifyProduct[]) {
     products = [...products, ...p];
   },
+  setCollections(c: ShopifyCollection[]) {
+    collections = c;
+  },
   setMeta(m: ShopifyMeta) {
     meta = m;
   },
@@ -156,6 +164,7 @@ export const store = {
 
   reset() {
     products = [];
+    collections = [];
     meta = null;
     appState = { status: "idle" };
   },

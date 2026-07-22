@@ -45,7 +45,7 @@
   defaultSortKey="category"
   rowClass={(r) => (r.inStock ? "" : "bg-red-50 dark:bg-red-950/30")}
 >
-  {#snippet children({ row, column })}
+  {#snippet cell({ row, column })}
     {#if column.key === "price"}
       <PriceDisplay
         price={row.price}

@@ -18,6 +18,7 @@
     validateStoreInput,
     fetchMeta,
     fetchAllProducts,
+    fetchCollections,
     ShopifyError,
   } from "./lib/api/client.js";
   import { saveSnapshot } from "./lib/utils/price-history.js";
@@ -181,6 +182,9 @@
       store.setAppState({ status: "loaded" });
       store.onFetchComplete(domain, meta.name);
       void saveSnapshot(domain, products);
+      void fetchCollections(domain, signal).then((c) => {
+        store.setCollections(c);
+      });
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
       const message =
@@ -272,7 +276,11 @@
             </div>
           {/if}
 
-          <div class="mt-4">
+          <div
+            class="mt-4"
+            role="tabpanel"
+            aria-label="{store.activeView} view"
+          >
             {#if store.activeView === "summary"}
               <ProductSummary
                 data={filteredSummaries}
@@ -292,6 +300,7 @@
             {:else if store.activeView === "categories"}
               <CategoryBreakdown
                 groups={store.categoryGroups}
+                collections={store.collections}
                 currency={store.meta?.currency}
               />
             {:else if store.activeView === "analysis"}

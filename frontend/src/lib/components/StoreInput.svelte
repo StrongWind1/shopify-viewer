@@ -72,6 +72,7 @@
         type="text"
         {disabled}
         placeholder="Enter a Shopify store URL (e.g., lttstore.com)"
+        aria-label="Store URL"
         maxlength={253}
         class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-10 text-sm text-slate-800 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-gray-600 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-gray-500"
         onfocus={handleFocus}

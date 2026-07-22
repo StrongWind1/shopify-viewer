@@ -3,6 +3,7 @@
   generics="T"
 >
   import { ChevronUp, ChevronDown } from "@lucide/svelte";
+  import VirtualList from "./VirtualList.svelte";
 
   interface Column<Row> {
     key: string;
@@ -20,16 +21,16 @@
     rowClass?: (row: T) => string;
   }
 
-  type Snippet = import("svelte").Snippet<[{ row: T; column: Column<T> }]>;
+  type CellSnippet = import("svelte").Snippet<[{ row: T; column: Column<T> }]>;
 
   let {
     columns,
     data,
-    children,
+    cell,
     rowClass = () => "",
     defaultSortKey = "",
     defaultSortDir = "asc" as "asc" | "desc",
-  }: Props & { children: Snippet } = $props();
+  }: Props & { cell: CellSnippet } = $props();
 
   let sortKey = $state(defaultSortKey);
   let sortDir = $state<"asc" | "desc">(defaultSortDir);
@@ -115,15 +116,20 @@
       </tr>
     </thead>
     <tbody>
-      {#each sortedData as row, i (i)}
-        <tr class="border-b border-gray-100 dark:border-gray-800 {rowClass(row)}">
-          {#each columns as column (column.key)}
-            <td class="px-3 py-2 {column.align === 'right' ? 'text-right' : ''}">
-              {@render children({ row, column })}
-            </td>
-          {/each}
-        </tr>
-      {/each}
+      <VirtualList
+        items={sortedData}
+        itemHeight={40}
+      >
+        {#snippet children({ item: row })}
+          <tr class="border-b border-gray-100 dark:border-gray-800 {rowClass(row)}">
+            {#each columns as column (column.key)}
+              <td class="px-3 py-2 {column.align === 'right' ? 'text-right' : ''}">
+                {@render cell({ row, column })}
+              </td>
+            {/each}
+          </tr>
+        {/snippet}
+      </VirtualList>
     </tbody>
   </table>
 </div>

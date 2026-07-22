@@ -2,15 +2,16 @@
   import { ChevronRight, ChevronDown } from "@lucide/svelte";
   import { SvelteSet } from "svelte/reactivity";
   import Badge from "../shared/Badge.svelte";
-  import type { CategoryGroup } from "../../types/shopify-types.js";
+  import type { CategoryGroup, ShopifyCollection } from "../../types/shopify-types.js";
   import { formatPrice } from "../../utils/price-utils.js";
 
   interface Props {
     groups: CategoryGroup[];
+    collections?: ShopifyCollection[];
     currency?: string | undefined;
   }
 
-  const { groups, currency = undefined }: Props = $props();
+  const { groups, collections = [], currency = undefined }: Props = $props();
 
   let expanded = new SvelteSet<string>();
 
@@ -103,4 +104,48 @@
       {/if}
     </div>
   {/each}
+
+  {#if collections.length > 0}
+    <div class="mt-8">
+      <h3 class="mb-3 text-base font-semibold text-slate-800 dark:text-slate-200">
+        Collections ({collections.length})
+      </h3>
+      <div class="rounded-lg border border-gray-200 dark:border-gray-700">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-slate-800">
+              <th
+                scope="col"
+                class="px-4 py-2 text-left font-semibold text-gray-700 dark:text-gray-300"
+                >Collection</th
+              >
+              <th
+                scope="col"
+                class="px-4 py-2 text-right font-semibold text-gray-700 dark:text-gray-300"
+                >Products</th
+              >
+              <th
+                scope="col"
+                class="px-4 py-2 text-left font-semibold text-gray-700 dark:text-gray-300"
+                >Last Updated</th
+              >
+            </tr>
+          </thead>
+          <tbody>
+            {#each collections as col (col.handle)}
+              <tr class="border-b border-gray-100 dark:border-gray-800">
+                <td class="px-4 py-2 text-slate-800 dark:text-slate-200">{col.title}</td>
+                <td class="px-4 py-2 text-right text-gray-600 dark:text-gray-400"
+                  >{col.products_count}</td
+                >
+                <td class="px-4 py-2 text-gray-500 dark:text-gray-400"
+                  >{col.updated_at.slice(0, 10)}</td
+                >
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {/if}
 </div>

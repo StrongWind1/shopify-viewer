@@ -1,4 +1,9 @@
-import type { ShopifyProduct, ShopifyMeta, ErrorCode } from "../types/shopify-types.js";
+import type {
+  ShopifyProduct,
+  ShopifyMeta,
+  ShopifyCollection,
+  ErrorCode,
+} from "../types/shopify-types.js";
 import { normalizeDomain } from "../utils/url-utils.js";
 
 const PROXY_BASE = "https://shopify-viewer-proxy.strongwind.workers.dev";
@@ -174,6 +179,33 @@ export async function fetchAllProducts(
   }
 
   return products;
+}
+
+const COLLECTIONS_TIMEOUT_MS = 15_000;
+
+/** Fetch the store's published collections from the proxy. */
+export async function fetchCollections(
+  domain: string,
+  signal?: AbortSignal,
+): Promise<ShopifyCollection[]> {
+  const data = await proxyFetch(
+    "/api/collections",
+    { store: domain },
+    COLLECTIONS_TIMEOUT_MS,
+    signal,
+  );
+
+  if (typeof data !== "object" || data === null || !("collections" in data)) {
+    return [];
+  }
+
+  const responseObj = data as Record<string, unknown>;
+  const collectionsField = responseObj["collections"];
+  if (!Array.isArray(collectionsField)) {
+    return [];
+  }
+
+  return collectionsField as ShopifyCollection[];
 }
 
 function delay(ms: number): Promise<void> {

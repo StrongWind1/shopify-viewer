@@ -113,7 +113,7 @@
       defaultSortKey="averagePrice"
       defaultSortDir="desc"
     >
-      {#snippet children({ row, column })}
+      {#snippet cell({ row, column })}
         {#if column.key === "name"}
           {row.name}
         {:else if column.key === "productCount"}

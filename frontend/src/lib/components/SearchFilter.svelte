@@ -35,6 +35,7 @@
       bind:value={searchQuery}
       oninput={handleInput}
       placeholder="Search products..."
+      aria-label="Search products"
       class="w-full rounded-lg border border-gray-300 bg-white py-2 pr-8 pl-9 text-sm text-slate-800 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-gray-600 dark:bg-slate-800 dark:text-slate-200"
     />
     {#if searchQuery !== ""}
@@ -54,6 +55,7 @@
     <select
       bind:value={selectedCategory}
       onchange={handleInput}
+      aria-label="Filter by category"
       class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-slate-800 dark:text-slate-200"
     >
       <option value="">All Categories</option>
@@ -65,6 +67,7 @@
     <select
       bind:value={stockFilter}
       onchange={handleInput}
+      aria-label="Filter by stock status"
       class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-slate-800 dark:text-slate-200"
     >
       <option value="all">All Stock</option>

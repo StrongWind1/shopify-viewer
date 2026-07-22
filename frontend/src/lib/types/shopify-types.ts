@@ -183,6 +183,7 @@ export const VIEW_IDS = {
   categories: "categories",
   analysis: "analysis",
   history: "history",
+  compare: "compare",
   export: "export",
 } as const;
 

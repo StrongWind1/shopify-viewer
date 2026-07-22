@@ -89,6 +89,7 @@ function readUrlParams(): { store: string | null; view: ViewId | null } {
     "categories",
     "analysis",
     "history",
+    "compare",
     "export",
   ];
   return {

@@ -12,6 +12,7 @@
   import CategoryBreakdown from "./lib/components/views/CategoryBreakdown.svelte";
   import PriceAnalysisView from "./lib/components/views/PriceAnalysis.svelte";
   import PriceHistory from "./lib/components/views/PriceHistory.svelte";
+  import StoreComparison from "./lib/components/views/StoreComparison.svelte";
   import ExportPanel from "./lib/components/views/ExportPanel.svelte";
   import { store } from "./lib/stores/app-store.svelte.js";
   import {
@@ -314,6 +315,12 @@
               <PriceHistory
                 domain={store.domain}
                 currency={store.meta?.currency}
+              />
+            {:else if store.activeView === "compare"}
+              <StoreComparison
+                primaryProducts={store.products}
+                primaryMeta={store.meta}
+                primaryDomain={store.domain}
               />
             {:else if store.activeView === "export"}
               <ExportPanel

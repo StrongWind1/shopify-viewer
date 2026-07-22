@@ -7,6 +7,7 @@
     Download,
     List,
     History,
+    GitCompareArrows,
   } from "@lucide/svelte";
   import type { ViewId } from "../types/shopify-types.js";
   import type { Component } from "svelte";
@@ -26,6 +27,7 @@
     { id: "categories", label: "Categories", icon: FolderTree },
     { id: "analysis", label: "Analysis", icon: BarChart3 },
     { id: "history", label: "History", icon: History },
+    { id: "compare", label: "Compare", icon: GitCompareArrows },
     { id: "export", label: "Export", icon: Download },
   ];
 </script>

@@ -1,0 +1,23 @@
+* text=auto eol=lf
+
+*.ts        text eol=lf
+*.js        text eol=lf
+*.svelte    text eol=lf
+*.css       text eol=lf
+*.html      text eol=lf
+*.json      text eol=lf
+*.toml      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.sh        text eol=lf
+*.fish      text eol=lf
+Makefile    text eol=lf
+*.md        text eol=lf
+
+*.png       binary
+*.jpg       binary
+*.gif       binary
+*.ico       binary
+*.webp      binary
+*.woff2     binary
+*.svg       text eol=lf

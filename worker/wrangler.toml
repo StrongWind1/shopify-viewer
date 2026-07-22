@@ -1,0 +1,6 @@
+name = "shopify-viewer-proxy"
+main = "src/index.ts"
+compatibility_date = "2025-07-22"
+
+[observability]
+enabled = true

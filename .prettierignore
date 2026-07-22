@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.svelte-kit/
+.wrangler/
+pnpm-lock.yaml
+CHANGELOG.md
+LICENSE

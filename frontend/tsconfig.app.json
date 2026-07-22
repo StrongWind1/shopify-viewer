@@ -21,8 +21,7 @@
     "src/**/*.ts",
     "src/**/*.js",
     "src/**/*.svelte",
-    "tests/**/*.ts",
-    "vitest.config.ts",
-    "playwright.config.ts"
+    "tests/unit/**/*.ts",
+    "vitest.config.ts"
   ]
 }

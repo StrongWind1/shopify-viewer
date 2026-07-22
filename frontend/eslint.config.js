@@ -56,6 +56,6 @@ export default ts.config(
     },
   },
   {
-    ignores: ["dist/", "node_modules/", ".svelte-kit/"],
+    ignores: ["dist/", "node_modules/", ".svelte-kit/", "tests/e2e/", "playwright.config.ts"],
   },
 );

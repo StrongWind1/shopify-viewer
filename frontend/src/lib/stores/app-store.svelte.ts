@@ -80,7 +80,15 @@ function readUrlParams(): { store: string | null; view: ViewId | null } {
   const url = new URL(window.location.href);
   const store = url.searchParams.get("store");
   const view = url.searchParams.get("view") as ViewId | null;
-  const validViews: ViewId[] = ["summary", "products", "cards", "categories", "analysis", "export"];
+  const validViews: ViewId[] = [
+    "summary",
+    "products",
+    "cards",
+    "categories",
+    "analysis",
+    "history",
+    "export",
+  ];
   return {
     store,
     view: view !== null && validViews.includes(view) ? view : null,

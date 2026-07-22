@@ -172,6 +172,7 @@ export const VIEW_IDS = {
   cards: "cards",
   categories: "categories",
   analysis: "analysis",
+  history: "history",
   export: "export",
 } as const;
 

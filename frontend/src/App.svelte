@@ -5,11 +5,13 @@
   import StoreInput from "./lib/components/StoreInput.svelte";
   import ProgressBar from "./lib/components/ProgressBar.svelte";
   import ViewTabs from "./lib/components/ViewTabs.svelte";
+  import SearchFilter from "./lib/components/SearchFilter.svelte";
   import ProductSummary from "./lib/components/views/ProductSummary.svelte";
   import ProductList from "./lib/components/views/ProductList.svelte";
   import CardGrid from "./lib/components/views/CardGrid.svelte";
   import CategoryBreakdown from "./lib/components/views/CategoryBreakdown.svelte";
   import PriceAnalysisView from "./lib/components/views/PriceAnalysis.svelte";
+  import PriceHistory from "./lib/components/views/PriceHistory.svelte";
   import ExportPanel from "./lib/components/views/ExportPanel.svelte";
   import { store } from "./lib/stores/app-store.svelte.js";
   import {
@@ -18,15 +20,99 @@
     fetchAllProducts,
     ShopifyError,
   } from "./lib/api/client.js";
+  import { saveSnapshot } from "./lib/utils/price-history.js";
 
   let inputValue = $state("");
   let errorMessage = $state<string | null>(null);
   let abortController: AbortController | null = null;
 
+  let searchQuery = $state("");
+  let selectedCategory = $state("");
+  let stockFilter = $state<"all" | "inStock" | "outOfStock">("all");
+
   const isLoading = $derived(
     store.appState.status === "fetching_meta" || store.appState.status === "fetching_products",
   );
   const hasProducts = $derived(store.products.length > 0);
+
+  const categories = $derived([...new Set(store.productSummaries.map((p) => p.category))].sort());
+
+  const filteredProducts = $derived.by(() => {
+    let items = store.products;
+    const q = searchQuery.toLowerCase().trim();
+
+    if (q !== "") {
+      items = items.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.product_type.toLowerCase().includes(q) ||
+          p.vendor.toLowerCase().includes(q) ||
+          p.tags.some((t) => t.toLowerCase().includes(q)),
+      );
+    }
+
+    if (selectedCategory !== "") {
+      const cat = selectedCategory === "Uncategorized" ? "" : selectedCategory;
+      items = items.filter((p) => p.product_type === cat);
+    }
+
+    if (stockFilter !== "all") {
+      const wantAvailable = stockFilter === "inStock";
+      items = items.filter((p) => p.variants.some((v) => v.available) === wantAvailable);
+    }
+
+    return items;
+  });
+
+  const filteredSummaries = $derived.by(() => {
+    let items = store.productSummaries;
+    const q = searchQuery.toLowerCase().trim();
+
+    if (q !== "") {
+      items = items.filter(
+        (p) => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q),
+      );
+    }
+    if (selectedCategory !== "") {
+      items = items.filter((p) => p.category === selectedCategory);
+    }
+    if (stockFilter !== "all") {
+      items = items.filter((p) => p.inStock === (stockFilter === "inStock"));
+    }
+    return items;
+  });
+
+  const filteredListRows = $derived.by(() => {
+    let items = store.productListRows;
+    const q = searchQuery.toLowerCase().trim();
+
+    if (q !== "") {
+      items = items.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          p.option.toLowerCase().includes(q),
+      );
+    }
+    if (selectedCategory !== "") {
+      items = items.filter((p) => p.category === selectedCategory);
+    }
+    if (stockFilter !== "all") {
+      items = items.filter((p) => p.inStock === (stockFilter === "inStock"));
+    }
+    return items;
+  });
+
+  const isFiltered = $derived(
+    searchQuery !== "" || selectedCategory !== "" || stockFilter !== "all",
+  );
+  const filterableViews = ["summary", "products", "cards"];
+
+  function resetFilters() {
+    searchQuery = "";
+    selectedCategory = "";
+    stockFilter = "all";
+  }
 
   async function handleFetch(url: string) {
     if (abortController !== null) {
@@ -38,6 +124,7 @@
     errorMessage = null;
     store.reset();
     store.setProducts([]);
+    resetFilters();
 
     let domain: string;
     try {
@@ -93,13 +180,19 @@
 
       store.setAppState({ status: "loaded" });
       store.onFetchComplete(domain, meta.name);
+      void saveSnapshot(domain, products);
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
       const message =
         err instanceof ShopifyError ? err.message : "Something went wrong. Please try again.";
       const code = err instanceof ShopifyError ? err.code : ("UNKNOWN_ERROR" as const);
       errorMessage = message;
-      store.setAppState({ status: "error", code, message, partialProducts: store.products.length });
+      store.setAppState({
+        status: "error",
+        code,
+        message,
+        partialProducts: store.products.length,
+      });
     }
   }
 
@@ -152,7 +245,9 @@
             <h2 class="text-lg font-semibold">
               {store.meta?.name ?? store.domain}
               <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                — {store.products.length} products
+                — {store.products.length} products{isFiltered
+                  ? ` (${String(filteredProducts.length)} shown)`
+                  : ""}
               </span>
             </h2>
           </div>
@@ -165,20 +260,32 @@
             }}
           />
 
+          {#if filterableViews.includes(store.activeView)}
+            <div class="mt-4">
+              <SearchFilter
+                bind:searchQuery
+                {categories}
+                bind:selectedCategory
+                bind:stockFilter
+                onchange={() => {}}
+              />
+            </div>
+          {/if}
+
           <div class="mt-4">
             {#if store.activeView === "summary"}
               <ProductSummary
-                data={store.productSummaries}
+                data={filteredSummaries}
                 currency={store.meta?.currency}
               />
             {:else if store.activeView === "products"}
               <ProductList
-                data={store.productListRows}
+                data={filteredListRows}
                 currency={store.meta?.currency}
               />
             {:else if store.activeView === "cards"}
               <CardGrid
-                products={store.products}
+                products={filteredProducts}
                 domain={store.domain}
                 currency={store.meta?.currency}
               />
@@ -194,6 +301,11 @@
                   currency={store.meta?.currency}
                 />
               {/if}
+            {:else if store.activeView === "history"}
+              <PriceHistory
+                domain={store.domain}
+                currency={store.meta?.currency}
+              />
             {:else if store.activeView === "export"}
               <ExportPanel
                 products={store.products}

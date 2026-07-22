@@ -1,5 +1,13 @@
 <script lang="ts">
-  import { Table, LayoutGrid, FolderTree, BarChart3, Download, List } from "@lucide/svelte";
+  import {
+    Table,
+    LayoutGrid,
+    FolderTree,
+    BarChart3,
+    Download,
+    List,
+    History,
+  } from "@lucide/svelte";
   import type { ViewId } from "../types/shopify-types.js";
   import type { Component } from "svelte";
 
@@ -17,6 +25,7 @@
     { id: "cards", label: "Cards", icon: LayoutGrid },
     { id: "categories", label: "Categories", icon: FolderTree },
     { id: "analysis", label: "Analysis", icon: BarChart3 },
+    { id: "history", label: "History", icon: History },
     { id: "export", label: "Export", icon: Download },
   ];
 </script>

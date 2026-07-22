@@ -1,6 +1,7 @@
 <script lang="ts">
   import ProductImage from "../shared/ProductImage.svelte";
   import Badge from "../shared/Badge.svelte";
+  import ImageGallery from "../shared/ImageGallery.svelte";
   import type { ShopifyProduct } from "../../types/shopify-types.js";
   import { parsePrice, formatPrice } from "../../utils/price-utils.js";
   import { productImageSrc } from "../../utils/image-utils.js";
@@ -12,6 +13,8 @@
   }
 
   const { products, domain, currency = undefined }: Props = $props();
+
+  let galleryProduct = $state<ShopifyProduct | null>(null);
 
   function priceRange(product: ShopifyProduct): string {
     const prices = product.variants.map((v) => parsePrice(v.price));
@@ -33,6 +36,14 @@
     outOfStock: "Out of Stock",
     limited: "Limited Stock",
   } as const;
+
+  function openGallery(e: Event, product: ShopifyProduct) {
+    if (product.images.length > 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      galleryProduct = product;
+    }
+  }
 </script>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
@@ -45,7 +56,18 @@
       rel="noopener"
       class="group block overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-shadow hover:shadow-lg dark:border-gray-700 dark:bg-slate-800"
     >
-      <div class="relative aspect-square overflow-hidden">
+      <div
+        class="relative aspect-square cursor-zoom-in overflow-hidden"
+        role="button"
+        tabindex="0"
+        aria-label="View images for {product.title}"
+        onclick={(e) => {
+          openGallery(e, product);
+        }}
+        onkeydown={(e) => {
+          if (e.key === "Enter" || e.key === " ") openGallery(e, product);
+        }}
+      >
         <ProductImage
           src={img?.src ?? null}
           alt={img?.alt ?? product.title}
@@ -53,6 +75,11 @@
         {#if product.product_type !== ""}
           <span class="absolute top-2 left-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
             {product.product_type}
+          </span>
+        {/if}
+        {#if product.images.length > 1}
+          <span class="absolute right-2 bottom-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
+            {product.images.length} photos
           </span>
         {/if}
       </div>
@@ -79,3 +106,13 @@
     </a>
   {/each}
 </div>
+
+{#if galleryProduct !== null}
+  <ImageGallery
+    images={galleryProduct.images}
+    title={galleryProduct.title}
+    onclose={() => {
+      galleryProduct = null;
+    }}
+  />
+{/if}

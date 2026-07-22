@@ -32,6 +32,8 @@ const API_ROUTES: Record<string, ApiRoute> = {
 // --- CORS ---
 
 function isAllowedOrigin(origin: string): boolean {
+  if (origin === "https://strongwind.dev") return true;
+  if (origin === "https://www.strongwind.dev") return true;
   if (origin === "https://strongwind1.github.io") return true;
   return /^http:\/\/localhost(:\d+)?$/.test(origin);
 }

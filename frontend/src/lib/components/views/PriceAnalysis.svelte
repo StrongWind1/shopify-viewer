@@ -21,11 +21,36 @@
 
   const catColumns = [
     { key: "name", label: "Category" },
-    { key: "productCount", label: "Products", align: "right" as const, sortValue: (r: CategoryPricing) => r.productCount },
-    { key: "averagePrice", label: "Avg Price", align: "right" as const, sortValue: (r: CategoryPricing) => r.averagePrice },
-    { key: "minPrice", label: "Min", align: "right" as const, sortValue: (r: CategoryPricing) => r.minPrice },
-    { key: "maxPrice", label: "Max", align: "right" as const, sortValue: (r: CategoryPricing) => r.maxPrice },
-    { key: "spread", label: "Spread", align: "right" as const, sortValue: (r: CategoryPricing) => r.spread },
+    {
+      key: "productCount",
+      label: "Products",
+      align: "right" as const,
+      sortValue: (r: CategoryPricing) => r.productCount,
+    },
+    {
+      key: "averagePrice",
+      label: "Avg Price",
+      align: "right" as const,
+      sortValue: (r: CategoryPricing) => r.averagePrice,
+    },
+    {
+      key: "minPrice",
+      label: "Min",
+      align: "right" as const,
+      sortValue: (r: CategoryPricing) => r.minPrice,
+    },
+    {
+      key: "maxPrice",
+      label: "Max",
+      align: "right" as const,
+      sortValue: (r: CategoryPricing) => r.maxPrice,
+    },
+    {
+      key: "spread",
+      label: "Spread",
+      align: "right" as const,
+      sortValue: (r: CategoryPricing) => r.spread,
+    },
   ];
 
   const chartMaxCount = $derived(Math.max(...data.distribution.map((b) => b.count), 1));
@@ -48,19 +73,32 @@
     {:else}
       <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
-          <p class="text-lg font-bold text-slate-800 dark:text-slate-200">{data.saleItems.count} of {data.saleItems.totalVariants}</p>
+          <p class="text-lg font-bold text-slate-800 dark:text-slate-200">
+            {data.saleItems.count} of {data.saleItems.totalVariants}
+          </p>
           <p class="text-xs text-gray-500">Items on Sale ({data.saleItems.percentage}%)</p>
         </div>
         <div class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
-          <p class="text-lg font-bold text-slate-800 dark:text-slate-200">{data.saleItems.averageDiscount}%</p>
+          <p class="text-lg font-bold text-slate-800 dark:text-slate-200">
+            {data.saleItems.averageDiscount}%
+          </p>
           <p class="text-xs text-gray-500">Average Discount</p>
         </div>
         <div class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
-          <p class="text-lg font-bold text-slate-800 dark:text-slate-200">{data.saleItems.biggestDiscount.percentage}%</p>
-          <p class="text-xs text-gray-500 truncate" title={data.saleItems.biggestDiscount.productTitle}>Biggest: {data.saleItems.biggestDiscount.productTitle}</p>
+          <p class="text-lg font-bold text-slate-800 dark:text-slate-200">
+            {data.saleItems.biggestDiscount.percentage}%
+          </p>
+          <p
+            class="truncate text-xs text-gray-500"
+            title={data.saleItems.biggestDiscount.productTitle}
+          >
+            Biggest: {data.saleItems.biggestDiscount.productTitle}
+          </p>
         </div>
         <div class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
-          <p class="text-lg font-bold text-slate-800 dark:text-slate-200">{formatPrice(data.saleItems.totalSavings, currency)}</p>
+          <p class="text-lg font-bold text-slate-800 dark:text-slate-200">
+            {formatPrice(data.saleItems.totalSavings, currency)}
+          </p>
           <p class="text-xs text-gray-500">Total Savings</p>
         </div>
       </div>
@@ -69,7 +107,12 @@
 
   <section>
     <h3 class="mb-3 text-lg font-semibold text-slate-800 dark:text-slate-200">Price by Category</h3>
-    <SortableTable columns={catColumns} data={data.categoryPricing} defaultSortKey="averagePrice" defaultSortDir="desc">
+    <SortableTable
+      columns={catColumns}
+      data={data.categoryPricing}
+      defaultSortKey="averagePrice"
+      defaultSortDir="desc"
+    >
       {#snippet children({ row, column })}
         {#if column.key === "name"}
           {row.name}
@@ -90,9 +133,16 @@
 
   {#if data.distribution.length > 0}
     <section>
-      <h3 class="mb-3 text-lg font-semibold text-slate-800 dark:text-slate-200">Price Distribution</h3>
+      <h3 class="mb-3 text-lg font-semibold text-slate-800 dark:text-slate-200">
+        Price Distribution
+      </h3>
       <div class="overflow-x-auto rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-        <svg viewBox="0 0 {data.distribution.length * 50} 200" class="h-48 w-full" role="img" aria-label="Price distribution histogram">
+        <svg
+          viewBox="0 0 {data.distribution.length * 50} 200"
+          class="h-48 w-full"
+          role="img"
+          aria-label="Price distribution histogram"
+        >
           {#each data.distribution as bucket, i}
             {@const barHeight = (bucket.count / chartMaxCount) * 160}
             <g transform="translate({i * 50}, 0)">
@@ -135,7 +185,10 @@
       <ol class="space-y-2">
         {#each data.mostExpensive as item}
           <li class="flex items-center gap-3 text-sm">
-            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold dark:bg-gray-800">{item.rank}</span>
+            <span
+              class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold dark:bg-gray-800"
+              >{item.rank}</span
+            >
             <span class="flex-1 truncate text-slate-800 dark:text-slate-200">{item.title}</span>
             <span class="font-semibold">{formatPrice(item.price, currency)}</span>
           </li>
@@ -147,7 +200,10 @@
       <ol class="space-y-2">
         {#each data.leastExpensive as item}
           <li class="flex items-center gap-3 text-sm">
-            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold dark:bg-gray-800">{item.rank}</span>
+            <span
+              class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold dark:bg-gray-800"
+              >{item.rank}</span
+            >
             <span class="flex-1 truncate text-slate-800 dark:text-slate-200">{item.title}</span>
             <span class="font-semibold">{formatPrice(item.price, currency)}</span>
           </li>

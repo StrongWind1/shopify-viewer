@@ -15,7 +15,18 @@ function row(fields: string[]): string {
 
 export function productListToCsv(rows: ProductListRow[]): string {
   const lines = [
-    BOM + row(["Category", "Product", "Option", "Price", "Original Price", "In Stock", "URL", "Weight (g)", "Created"]),
+    BOM +
+      row([
+        "Category",
+        "Product",
+        "Option",
+        "Price",
+        "Original Price",
+        "In Stock",
+        "URL",
+        "Weight (g)",
+        "Created",
+      ]),
   ];
 
   for (const r of rows) {

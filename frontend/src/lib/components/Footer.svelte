@@ -16,7 +16,9 @@
   });
 </script>
 
-<footer class="flex items-center justify-between border-t border-gray-200 px-4 py-4 text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400 sm:px-6">
+<footer
+  class="flex items-center justify-between border-t border-gray-200 px-4 py-4 text-sm text-gray-500 sm:px-6 dark:border-gray-700 dark:text-gray-400"
+>
   <span>
     {#if relativeTime !== null}
       Last fetched: {relativeTime}

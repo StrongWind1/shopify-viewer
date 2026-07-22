@@ -1,6 +1,10 @@
 <script lang="ts">
   import { Download, Check } from "@lucide/svelte";
-  import type { ShopifyProduct, ProductSummary, ProductListRow } from "../../types/shopify-types.js";
+  import type {
+    ShopifyProduct,
+    ProductSummary,
+    ProductListRow,
+  } from "../../types/shopify-types.js";
   import { productListToCsv, productSummaryToCsv, downloadFile } from "../../utils/csv-export.js";
 
   interface Props {
@@ -20,36 +24,74 @@
 
   function flash(id: string) {
     downloaded = id;
-    setTimeout(() => { downloaded = null; }, 1500);
+    setTimeout(() => {
+      downloaded = null;
+    }, 1500);
   }
 
   function exportProductListCsv() {
-    downloadFile(productListToCsv(listRows), `${domain}-product-list-${dateStr()}.csv`, "text/csv; charset=utf-8");
+    downloadFile(
+      productListToCsv(listRows),
+      `${domain}-product-list-${dateStr()}.csv`,
+      "text/csv; charset=utf-8",
+    );
     flash("list-csv");
   }
 
   function exportSummaryCsv() {
-    downloadFile(productSummaryToCsv(summaries), `${domain}-product-summary-${dateStr()}.csv`, "text/csv; charset=utf-8");
+    downloadFile(
+      productSummaryToCsv(summaries),
+      `${domain}-product-summary-${dateStr()}.csv`,
+      "text/csv; charset=utf-8",
+    );
     flash("summary-csv");
   }
 
   function exportRawJson() {
-    const content = JSON.stringify({ store: domain, fetchedAt: new Date().toISOString(), products }, null, 2);
+    const content = JSON.stringify(
+      { store: domain, fetchedAt: new Date().toISOString(), products },
+      null,
+      2,
+    );
     downloadFile(content, `${domain}-products-raw-${dateStr()}.json`, "application/json");
     flash("raw-json");
   }
 
   function exportSummaryJson() {
-    const content = JSON.stringify({ store: domain, fetchedAt: new Date().toISOString(), products: summaries }, null, 2);
+    const content = JSON.stringify(
+      { store: domain, fetchedAt: new Date().toISOString(), products: summaries },
+      null,
+      2,
+    );
     downloadFile(content, `${domain}-products-summary-${dateStr()}.json`, "application/json");
     flash("summary-json");
   }
 
   const buttons = [
-    { id: "list-csv", label: "Product List (CSV)", desc: "All variants, one row each", action: exportProductListCsv },
-    { id: "summary-csv", label: "Product Summary (CSV)", desc: "One row per product", action: exportSummaryCsv },
-    { id: "raw-json", label: "Raw Data (JSON)", desc: "Original API response", action: exportRawJson },
-    { id: "summary-json", label: "Summary Data (JSON)", desc: "Transformed summaries", action: exportSummaryJson },
+    {
+      id: "list-csv",
+      label: "Product List (CSV)",
+      desc: "All variants, one row each",
+      action: exportProductListCsv,
+    },
+    {
+      id: "summary-csv",
+      label: "Product Summary (CSV)",
+      desc: "One row per product",
+      action: exportSummaryCsv,
+    },
+    {
+      id: "raw-json",
+      label: "Raw Data (JSON)",
+      desc: "Original API response",
+      action: exportRawJson,
+    },
+    {
+      id: "summary-json",
+      label: "Summary Data (JSON)",
+      desc: "Transformed summaries",
+      action: exportSummaryJson,
+    },
   ] as const;
 </script>
 

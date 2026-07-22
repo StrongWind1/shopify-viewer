@@ -37,7 +37,10 @@ describe("productImageSrc", () => {
   });
 
   it("falls back to featured_image", () => {
-    const result = productImageSrc([], { src: "https://cdn.shopify.com/feat.jpg", alt: "Featured" });
+    const result = productImageSrc([], {
+      src: "https://cdn.shopify.com/feat.jpg",
+      alt: "Featured",
+    });
     expect(result).toEqual({ src: "https://cdn.shopify.com/feat.jpg", alt: "Featured" });
   });
 

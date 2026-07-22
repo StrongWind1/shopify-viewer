@@ -13,7 +13,11 @@
 
 <div class="w-full">
   <div class="mb-1 flex justify-between text-sm text-gray-600 dark:text-gray-400">
-    <span>{label}... {current > 0 ? `${String(current)}` : ""}{total > 0 ? ` of ~${String(total)}` : ""}</span>
+    <span
+      >{label}... {current > 0 ? `${String(current)}` : ""}{total > 0
+        ? ` of ~${String(total)}`
+        : ""}</span
+    >
     {#if !isIndeterminate}
       <span>{percentage}%</span>
     {/if}

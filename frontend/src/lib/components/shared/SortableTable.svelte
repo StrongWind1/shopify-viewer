@@ -1,4 +1,7 @@
-<script lang="ts" generics="T">
+<script
+  lang="ts"
+  generics="T"
+>
   import { ChevronUp, ChevronDown } from "@lucide/svelte";
 
   interface Column<Row> {
@@ -61,7 +64,8 @@
       if (vb === null || vb === undefined) return -1;
       if (typeof va === "string" && typeof vb === "string") return va.localeCompare(vb) * dir;
       if (typeof va === "number" && typeof vb === "number") return (va - vb) * dir;
-      if (typeof va === "boolean" && typeof vb === "boolean") return (Number(va) - Number(vb)) * dir;
+      if (typeof va === "boolean" && typeof vb === "boolean")
+        return (Number(va) - Number(vb)) * dir;
       return 0;
     });
   });
@@ -74,14 +78,22 @@
         {#each columns as col}
           <th
             scope="col"
-            class="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 {col.align === 'right' ? 'text-right' : 'text-left'}"
-            aria-sort={sortKey === col.key ? (sortDir === "asc" ? "ascending" : "descending") : undefined}
+            class="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 {col.align === 'right'
+              ? 'text-right'
+              : 'text-left'}"
+            aria-sort={sortKey === col.key
+              ? sortDir === "asc"
+                ? "ascending"
+                : "descending"
+              : undefined}
           >
             {#if col.sortable !== false}
               <button
                 type="button"
                 class="inline-flex cursor-pointer items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
-                onclick={() => { handleSort(col.key); }}
+                onclick={() => {
+                  handleSort(col.key);
+                }}
               >
                 {col.label}
                 {#if sortKey === col.key}

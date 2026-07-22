@@ -19,7 +19,9 @@
     {alt}
     loading="lazy"
     class="h-full w-full object-cover"
-    onerror={() => { hasError = true; }}
+    onerror={() => {
+      hasError = true;
+    }}
   />
 {:else}
   <div class="flex h-full w-full items-center justify-center bg-gray-100 dark:bg-gray-800">

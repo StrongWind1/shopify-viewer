@@ -21,16 +21,22 @@
   ];
 </script>
 
-<nav class="flex gap-1 overflow-x-auto border-b border-gray-200 dark:border-gray-700" aria-label="View tabs">
+<nav
+  class="flex gap-1 overflow-x-auto border-b border-gray-200 dark:border-gray-700"
+  aria-label="View tabs"
+>
   {#each tabs as tab}
     {@const Icon = tab.icon}
     <button
       type="button"
       {disabled}
-      class="inline-flex shrink-0 cursor-pointer items-center gap-1.5 border-b-2 px-4 py-2.5 text-sm font-medium transition-colors {active === tab.id
+      class="inline-flex shrink-0 cursor-pointer items-center gap-1.5 border-b-2 px-4 py-2.5 text-sm font-medium transition-colors {active ===
+      tab.id
         ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
         : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'} disabled:cursor-not-allowed disabled:opacity-50"
-      onclick={() => { onselect(tab.id); }}
+      onclick={() => {
+        onselect(tab.id);
+      }}
       aria-selected={active === tab.id}
       role="tab"
     >

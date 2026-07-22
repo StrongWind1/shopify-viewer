@@ -49,8 +49,14 @@ export function toProductListRows(products: ShopifyProduct[], domain: string): P
   return rows;
 }
 
-export function toCategoryGroups(summaries: ProductSummary[], products: ShopifyProduct[]): CategoryGroup[] {
-  const groups = new Map<string, { summaries: ProductSummary[]; variantCount: number; allPrices: number[] }>();
+export function toCategoryGroups(
+  summaries: ProductSummary[],
+  products: ShopifyProduct[],
+): CategoryGroup[] {
+  const groups = new Map<
+    string,
+    { summaries: ProductSummary[]; variantCount: number; allPrices: number[] }
+  >();
 
   for (let i = 0; i < summaries.length; i++) {
     const s = summaries[i];
@@ -78,7 +84,8 @@ export function toCategoryGroups(summaries: ProductSummary[], products: ShopifyP
       productCount: g.summaries.length,
       variantCount: g.variantCount,
       inStockCount,
-      inStockRate: g.summaries.length > 0 ? Math.round((inStockCount / g.summaries.length) * 1000) / 10 : 0,
+      inStockRate:
+        g.summaries.length > 0 ? Math.round((inStockCount / g.summaries.length) * 1000) / 10 : 0,
       priceMin: g.allPrices.length > 0 ? Math.min(...g.allPrices) : 0,
       priceMax: g.allPrices.length > 0 ? Math.max(...g.allPrices) : 0,
     });
@@ -172,13 +179,25 @@ export function toPriceAnalysis(products: ShopifyProduct[], domain: string): Pri
   const mostExpensive: RankedProduct[] = productPrices
     .toSorted((a, b) => b.maxPrice - a.maxPrice)
     .slice(0, 5)
-    .map((p, i) => ({ rank: i + 1, title: p.title, price: p.maxPrice, category: p.category, handle: p.handle }));
+    .map((p, i) => ({
+      rank: i + 1,
+      title: p.title,
+      price: p.maxPrice,
+      category: p.category,
+      handle: p.handle,
+    }));
 
   const leastExpensive: RankedProduct[] = productPrices
     .filter((p) => p.minPrice > 0)
     .toSorted((a, b) => a.minPrice - b.minPrice)
     .slice(0, 5)
-    .map((p, i) => ({ rank: i + 1, title: p.title, price: p.minPrice, category: p.category, handle: p.handle }));
+    .map((p, i) => ({
+      rank: i + 1,
+      title: p.title,
+      price: p.minPrice,
+      category: p.category,
+      handle: p.handle,
+    }));
 
   return {
     totalProducts: products.length,

@@ -9,7 +9,12 @@ import type {
   AppState,
   ViewId,
 } from "../types/shopify-types.js";
-import { toProductSummaries, toProductListRows, toCategoryGroups, toPriceAnalysis } from "../utils/data-transforms.js";
+import {
+  toProductSummaries,
+  toProductListRows,
+  toCategoryGroups,
+  toPriceAnalysis,
+} from "../utils/data-transforms.js";
 
 const MAX_RECENT = 20;
 const STORAGE_KEY = "shopify-viewer-recent";
@@ -86,22 +91,52 @@ function readUrlParams(): { store: string | null; view: ViewId | null } {
 }
 
 export const store = {
-  get products() { return products; },
-  get meta() { return meta; },
-  get domain() { return domain; },
-  get appState() { return appState; },
-  get activeView() { return activeView; },
-  get fetchedAt() { return fetchedAt; },
-  get productSummaries() { return productSummaries; },
-  get productListRows() { return productListRows; },
-  get categoryGroups() { return categoryGroups; },
-  get priceAnalysis() { return priceAnalysis; },
+  get products() {
+    return products;
+  },
+  get meta() {
+    return meta;
+  },
+  get domain() {
+    return domain;
+  },
+  get appState() {
+    return appState;
+  },
+  get activeView() {
+    return activeView;
+  },
+  get fetchedAt() {
+    return fetchedAt;
+  },
+  get productSummaries() {
+    return productSummaries;
+  },
+  get productListRows() {
+    return productListRows;
+  },
+  get categoryGroups() {
+    return categoryGroups;
+  },
+  get priceAnalysis() {
+    return priceAnalysis;
+  },
 
-  setProducts(p: ShopifyProduct[]) { products = p; },
-  appendProducts(p: ShopifyProduct[]) { products = [...products, ...p]; },
-  setMeta(m: ShopifyMeta) { meta = m; },
-  setDomain(d: string) { domain = d; },
-  setAppState(s: AppState) { appState = s; },
+  setProducts(p: ShopifyProduct[]) {
+    products = p;
+  },
+  appendProducts(p: ShopifyProduct[]) {
+    products = [...products, ...p];
+  },
+  setMeta(m: ShopifyMeta) {
+    meta = m;
+  },
+  setDomain(d: string) {
+    domain = d;
+  },
+  setAppState(s: AppState) {
+    appState = s;
+  },
 
   setActiveView(v: ViewId) {
     activeView = v;

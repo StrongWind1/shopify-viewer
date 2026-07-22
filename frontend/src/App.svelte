@@ -12,7 +12,12 @@
   import PriceAnalysisView from "./lib/components/views/PriceAnalysis.svelte";
   import ExportPanel from "./lib/components/views/ExportPanel.svelte";
   import { store } from "./lib/stores/app-store.svelte.js";
-  import { validateStoreInput, fetchMeta, fetchAllProducts, ShopifyError } from "./lib/api/client.js";
+  import {
+    validateStoreInput,
+    fetchMeta,
+    fetchAllProducts,
+    ShopifyError,
+  } from "./lib/api/client.js";
 
   let inputValue = $state("");
   let errorMessage = $state<string | null>(null);
@@ -40,7 +45,12 @@
     } catch (err) {
       if (err instanceof ShopifyError) {
         errorMessage = err.message;
-        store.setAppState({ status: "error", code: err.code, message: err.message, partialProducts: 0 });
+        store.setAppState({
+          status: "error",
+          code: err.code,
+          message: err.message,
+          partialProducts: 0,
+        });
       }
       return;
     }
@@ -72,7 +82,12 @@
 
       if (products.length === 0) {
         errorMessage = "This store has no published products.";
-        store.setAppState({ status: "error", code: "EMPTY_STORE", message: errorMessage, partialProducts: 0 });
+        store.setAppState({
+          status: "error",
+          code: "EMPTY_STORE",
+          message: errorMessage,
+          partialProducts: 0,
+        });
         return;
       }
 
@@ -80,7 +95,8 @@
       store.onFetchComplete(domain, meta.name);
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
-      const message = err instanceof ShopifyError ? err.message : "Something went wrong. Please try again.";
+      const message =
+        err instanceof ShopifyError ? err.message : "Something went wrong. Please try again.";
       const code = err instanceof ShopifyError ? err.code : ("UNKNOWN_ERROR" as const);
       errorMessage = message;
       store.setAppState({ status: "error", code, message, partialProducts: store.products.length });
@@ -99,7 +115,9 @@
   });
 </script>
 
-<div class="flex min-h-screen flex-col bg-white text-slate-800 dark:bg-slate-900 dark:text-slate-200">
+<div
+  class="flex min-h-screen flex-col bg-white text-slate-800 dark:bg-slate-900 dark:text-slate-200"
+>
   <Header />
 
   <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8">
@@ -110,7 +128,9 @@
         error={errorMessage}
         recentStores={store.getRecentStores()}
         onsubmit={handleFetch}
-        onclear={() => { store.clearRecentStores(); }}
+        onclear={() => {
+          store.clearRecentStores();
+        }}
       />
 
       {#if store.appState.status === "fetching_meta"}
@@ -140,21 +160,39 @@
           <ViewTabs
             active={store.activeView}
             disabled={isLoading}
-            onselect={(v) => { store.setActiveView(v); }}
+            onselect={(v) => {
+              store.setActiveView(v);
+            }}
           />
 
           <div class="mt-4">
             {#if store.activeView === "summary"}
-              <ProductSummary data={store.productSummaries} currency={store.meta?.currency} />
+              <ProductSummary
+                data={store.productSummaries}
+                currency={store.meta?.currency}
+              />
             {:else if store.activeView === "products"}
-              <ProductList data={store.productListRows} currency={store.meta?.currency} />
+              <ProductList
+                data={store.productListRows}
+                currency={store.meta?.currency}
+              />
             {:else if store.activeView === "cards"}
-              <CardGrid products={store.products} domain={store.domain} currency={store.meta?.currency} />
+              <CardGrid
+                products={store.products}
+                domain={store.domain}
+                currency={store.meta?.currency}
+              />
             {:else if store.activeView === "categories"}
-              <CategoryBreakdown groups={store.categoryGroups} currency={store.meta?.currency} />
+              <CategoryBreakdown
+                groups={store.categoryGroups}
+                currency={store.meta?.currency}
+              />
             {:else if store.activeView === "analysis"}
               {#if store.priceAnalysis !== null}
-                <PriceAnalysisView data={store.priceAnalysis} currency={store.meta?.currency} />
+                <PriceAnalysisView
+                  data={store.priceAnalysis}
+                  currency={store.meta?.currency}
+                />
               {/if}
             {:else if store.activeView === "export"}
               <ExportPanel

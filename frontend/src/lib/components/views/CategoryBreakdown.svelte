@@ -23,8 +23,12 @@
     expanded = next;
   }
 
-  function expandAll() { expanded = new Set(groups.map((g) => g.name)); }
-  function collapseAll() { expanded = new Set(); }
+  function expandAll() {
+    expanded = new Set(groups.map((g) => g.name));
+  }
+  function collapseAll() {
+    expanded = new Set();
+  }
 
   function rateColor(rate: number): string {
     if (rate >= 80) return "text-green-600 dark:text-green-400";
@@ -35,8 +39,16 @@
 
 <div class="space-y-2">
   <div class="flex justify-end gap-2 text-xs">
-    <button type="button" onclick={expandAll} class="cursor-pointer text-blue-600 hover:underline dark:text-blue-400">Expand All</button>
-    <button type="button" onclick={collapseAll} class="cursor-pointer text-blue-600 hover:underline dark:text-blue-400">Collapse All</button>
+    <button
+      type="button"
+      onclick={expandAll}
+      class="cursor-pointer text-blue-600 hover:underline dark:text-blue-400">Expand All</button
+    >
+    <button
+      type="button"
+      onclick={collapseAll}
+      class="cursor-pointer text-blue-600 hover:underline dark:text-blue-400">Collapse All</button
+    >
   </div>
 
   {#each groups as group}
@@ -44,7 +56,9 @@
     <div class="rounded-lg border border-gray-200 dark:border-gray-700">
       <button
         type="button"
-        onclick={() => { toggle(group.name); }}
+        onclick={() => {
+          toggle(group.name);
+        }}
         class="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-800"
       >
         {#if isOpen}
@@ -66,12 +80,22 @@
           <ul class="divide-y divide-gray-100 dark:divide-gray-800">
             {#each group.products as product}
               <li class="flex items-center justify-between px-6 py-2 text-sm">
-                <a href={product.url} target="_blank" rel="noopener" class="text-blue-600 hover:underline dark:text-blue-400">
+                <a
+                  href={product.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-blue-600 hover:underline dark:text-blue-400"
+                >
                   {product.title}
                 </a>
                 <div class="flex items-center gap-3">
-                  <span class="text-gray-600 dark:text-gray-400">{formatPrice(product.price, currency)}</span>
-                  <Badge variant={product.inStock ? "inStock" : "outOfStock"} label={product.inStock ? "YES" : "NO"} />
+                  <span class="text-gray-600 dark:text-gray-400"
+                    >{formatPrice(product.price, currency)}</span
+                  >
+                  <Badge
+                    variant={product.inStock ? "inStock" : "outOfStock"}
+                    label={product.inStock ? "YES" : "NO"}
+                  />
                 </div>
               </li>
             {/each}

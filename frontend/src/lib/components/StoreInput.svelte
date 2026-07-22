@@ -37,7 +37,9 @@
   }
 
   function handleBlur() {
-    setTimeout(() => { showDropdown = false; }, 150);
+    setTimeout(() => {
+      showDropdown = false;
+    }, 150);
   }
 
   function handleKeydown(e: KeyboardEvent) {
@@ -58,7 +60,10 @@
   }
 </script>
 
-<form onsubmit={handleSubmit} class="relative w-full max-w-2xl">
+<form
+  onsubmit={handleSubmit}
+  class="relative w-full max-w-2xl"
+>
   <div class="flex gap-2">
     <div class="relative flex-1">
       <input
@@ -72,12 +77,17 @@
         onfocus={handleFocus}
         onblur={handleBlur}
         onkeydown={handleKeydown}
-        oninput={() => { if (error !== null) onclear(); }}
+        oninput={() => {
+          if (error !== null) onclear();
+        }}
       />
       {#if value !== "" && !disabled}
         <button
           type="button"
-          onclick={() => { value = ""; inputEl?.focus(); }}
+          onclick={() => {
+            value = "";
+            inputEl?.focus();
+          }}
           class="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           aria-label="Clear input"
         >
@@ -105,14 +115,19 @@
   {/if}
 
   {#if showDropdown && recentStores.length > 0 && !disabled}
-    <div class="absolute top-full right-0 left-0 z-10 mt-1 rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-slate-800">
+    <div
+      class="absolute top-full right-0 left-0 z-10 mt-1 rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-slate-800"
+    >
       <ul class="max-h-64 overflow-y-auto py-1">
         {#each recentStores.slice(0, 10) as recent}
           <li>
             <button
               type="button"
               class="flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700"
-              onmousedown={(e) => { e.preventDefault(); selectRecent(recent.domain); }}
+              onmousedown={(e) => {
+                e.preventDefault();
+                selectRecent(recent.domain);
+              }}
             >
               <Clock class="h-3.5 w-3.5 shrink-0 text-gray-400" />
               <span class="flex-1 truncate">
@@ -127,7 +142,10 @@
       <button
         type="button"
         class="w-full cursor-pointer border-t border-gray-200 px-4 py-2 text-center text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700"
-        onmousedown={(e) => { e.preventDefault(); onclear(); }}
+        onmousedown={(e) => {
+          e.preventDefault();
+          onclear();
+        }}
       >
         Clear history
       </button>

@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { toProductSummaries, toProductListRows, toCategoryGroups, toPriceAnalysis } from "../../src/lib/utils/data-transforms.js";
+import {
+  toProductSummaries,
+  toProductListRows,
+  toCategoryGroups,
+  toPriceAnalysis,
+} from "../../src/lib/utils/data-transforms.js";
 import type { ShopifyProduct } from "../../src/lib/types/shopify-types.js";
 
 function makeProduct(overrides: Partial<ShopifyProduct> = {}): ShopifyProduct {
@@ -145,8 +150,16 @@ describe("toCategoryGroups", () => {
 
   it("computes in-stock rate", () => {
     const products = [
-      makeProduct({ id: 1, product_type: "Cat", variants: [{ ...makeProduct().variants[0]!, available: true }] }),
-      makeProduct({ id: 2, product_type: "Cat", variants: [{ ...makeProduct().variants[0]!, available: false }] }),
+      makeProduct({
+        id: 1,
+        product_type: "Cat",
+        variants: [{ ...makeProduct().variants[0]!, available: true }],
+      }),
+      makeProduct({
+        id: 2,
+        product_type: "Cat",
+        variants: [{ ...makeProduct().variants[0]!, available: false }],
+      }),
     ];
     const summaries = toProductSummaries(products, "test.com");
     const groups = toCategoryGroups(summaries, products);
@@ -184,7 +197,11 @@ describe("toPriceAnalysis", () => {
 
   it("ranks most/least expensive", () => {
     const products = Array.from({ length: 6 }, (_, i) =>
-      makeProduct({ id: i, title: `P${String(i)}`, variants: [{ ...makeProduct().variants[0]!, price: String((i + 1) * 10) }] }),
+      makeProduct({
+        id: i,
+        title: `P${String(i)}`,
+        variants: [{ ...makeProduct().variants[0]!, price: String((i + 1) * 10) }],
+      }),
     );
     const analysis = toPriceAnalysis(products, "test.com");
     expect(analysis.mostExpensive).toHaveLength(5);

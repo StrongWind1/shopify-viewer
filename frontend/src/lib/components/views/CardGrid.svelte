@@ -28,7 +28,11 @@
     return "inStock";
   }
 
-  const stockLabels = { inStock: "In Stock", outOfStock: "Out of Stock", limited: "Limited Stock" } as const;
+  const stockLabels = {
+    inStock: "In Stock",
+    outOfStock: "Out of Stock",
+    limited: "Limited Stock",
+  } as const;
 </script>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
@@ -42,7 +46,10 @@
       class="group block overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-shadow hover:shadow-lg dark:border-gray-700 dark:bg-slate-800"
     >
       <div class="relative aspect-square overflow-hidden">
-        <ProductImage src={img?.src ?? null} alt={img?.alt ?? product.title} />
+        <ProductImage
+          src={img?.src ?? null}
+          alt={img?.alt ?? product.title}
+        />
         {#if product.product_type !== ""}
           <span class="absolute top-2 left-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
             {product.product_type}
@@ -58,7 +65,10 @@
           {priceRange(product)}
         </p>
         <div class="mt-2 flex items-center justify-between">
-          <Badge variant={status} label={stockLabels[status]} />
+          <Badge
+            variant={status}
+            label={stockLabels[status]}
+          />
           {#if product.variants.length > 1}
             <span class="text-sm text-gray-500 dark:text-gray-400">
               {product.variants.length} variants

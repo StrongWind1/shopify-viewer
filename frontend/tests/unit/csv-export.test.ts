@@ -25,7 +25,9 @@ describe("productListToCsv", () => {
   it("has correct header row", () => {
     const csv = productListToCsv([row]);
     const firstLine = csv.split("\r\n")[0] ?? "";
-    expect(firstLine).toContain("Category,Product,Option,Price,Original Price,In Stock,URL,Weight (g),Created");
+    expect(firstLine).toContain(
+      "Category,Product,Option,Price,Original Price,In Stock,URL,Weight (g),Created",
+    );
   });
 
   it("uses CRLF line endings", () => {

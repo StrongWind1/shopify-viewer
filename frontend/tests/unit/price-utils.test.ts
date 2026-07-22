@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { parsePrice, computeDiscount, median, formatPrice } from "../../src/lib/utils/price-utils.js";
+import {
+  parsePrice,
+  computeDiscount,
+  median,
+  formatPrice,
+} from "../../src/lib/utils/price-utils.js";
 
 describe("parsePrice", () => {
   it("parses a decimal string", () => {

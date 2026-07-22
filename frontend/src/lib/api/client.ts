@@ -41,24 +41,40 @@ function proxyCodeToErrorCode(code: string): ErrorCode {
   }
 }
 
-async function proxyFetch(path: string, params: Record<string, string>, timeoutMs: number, signal?: AbortSignal): Promise<unknown> {
+async function proxyFetch(
+  path: string,
+  params: Record<string, string>,
+  timeoutMs: number,
+  signal?: AbortSignal,
+): Promise<unknown> {
   const url = new URL(path, PROXY_BASE);
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v);
   }
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => { controller.abort(); }, timeoutMs);
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, timeoutMs);
 
   if (signal !== undefined) {
-    signal.addEventListener("abort", () => { controller.abort(); }, { once: true });
+    signal.addEventListener(
+      "abort",
+      () => {
+        controller.abort();
+      },
+      { once: true },
+    );
   }
 
   try {
     const response = await fetch(url.toString(), { signal: controller.signal });
 
     if (response.status === 429) {
-      throw new ShopifyError("RATE_LIMITED", "Too many requests. Please wait a moment and try again.");
+      throw new ShopifyError(
+        "RATE_LIMITED",
+        "Too many requests. Please wait a moment and try again.",
+      );
     }
 
     const data: unknown = await response.json();

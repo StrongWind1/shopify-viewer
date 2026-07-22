@@ -22,14 +22,17 @@
 
   type Snippet = import("svelte").Snippet<[{ row: T; column: Column<T> }]>;
 
-  const props: Props & { children: Snippet } = $props();
-  const { columns, data, children } = $derived(props);
-  const rowClass = $derived(props.rowClass ?? (() => ""));
-  const initialSortKey = $derived(props.defaultSortKey ?? "");
-  const initialSortDir = $derived(props.defaultSortDir ?? "asc");
+  let {
+    columns,
+    data,
+    children,
+    rowClass = () => "",
+    defaultSortKey = "",
+    defaultSortDir = "asc" as "asc" | "desc",
+  }: Props & { children: Snippet } = $props();
 
-  let sortKey = $state(props.defaultSortKey ?? "");
-  let sortDir = $state<"asc" | "desc">(props.defaultSortDir ?? "asc");
+  let sortKey = $state(defaultSortKey);
+  let sortDir = $state<"asc" | "desc">(defaultSortDir);
   let clickCount = $state(0);
 
   function handleSort(key: string) {
@@ -38,8 +41,8 @@
       if (clickCount === 1) {
         sortDir = sortDir === "asc" ? "desc" : "asc";
       } else {
-        sortKey = initialSortKey;
-        sortDir = initialSortDir;
+        sortKey = defaultSortKey;
+        sortDir = defaultSortDir;
         clickCount = 0;
       }
     } else {
@@ -75,7 +78,7 @@
   <table class="min-w-full text-sm">
     <thead>
       <tr class="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-slate-800">
-        {#each columns as col}
+        {#each columns as col (col.key)}
           <th
             scope="col"
             class="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 {col.align === 'right'
@@ -112,9 +115,9 @@
       </tr>
     </thead>
     <tbody>
-      {#each sortedData as row}
+      {#each sortedData as row, i (i)}
         <tr class="border-b border-gray-100 dark:border-gray-800 {rowClass(row)}">
-          {#each columns as column}
+          {#each columns as column (column.key)}
             <td class="px-3 py-2 {column.align === 'right' ? 'text-right' : ''}">
               {@render children({ row, column })}
             </td>

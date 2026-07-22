@@ -36,7 +36,7 @@
 </script>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
-  {#each products as product}
+  {#each products as product (product.id)}
     {@const img = productImageSrc(product.images, product.variants[0]?.featured_image ?? null)}
     {@const status = stockStatus(product)}
     <a

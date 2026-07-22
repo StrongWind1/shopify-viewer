@@ -54,7 +54,7 @@
     {:else if column.key === "originalPrice"}
       {#if row.originalPrice !== null}
         <span class="text-gray-400 line-through"
-          >{@html ""}<PriceDisplay
+          ><PriceDisplay
             price={row.originalPrice}
             {currency}
           /></span

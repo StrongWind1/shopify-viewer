@@ -58,7 +58,7 @@
 
 <div class="space-y-8">
   <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-    {#each stats as stat}
+    {#each stats as stat (stat.label)}
       <div class="rounded-lg border border-gray-200 p-4 text-center dark:border-gray-700">
         <p class="text-2xl font-bold text-slate-800 dark:text-slate-200">{stat.value}</p>
         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{stat.label}</p>
@@ -143,7 +143,7 @@
           role="img"
           aria-label="Price distribution histogram"
         >
-          {#each data.distribution as bucket, i}
+          {#each data.distribution as bucket, i (i)}
             {@const barHeight = (bucket.count / chartMaxCount) * 160}
             <g transform="translate({i * 50}, 0)">
               <rect
@@ -183,7 +183,7 @@
     <section>
       <h3 class="mb-3 text-lg font-semibold text-slate-800 dark:text-slate-200">Most Expensive</h3>
       <ol class="space-y-2">
-        {#each data.mostExpensive as item}
+        {#each data.mostExpensive as item (item.rank)}
           <li class="flex items-center gap-3 text-sm">
             <span
               class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold dark:bg-gray-800"
@@ -198,7 +198,7 @@
     <section>
       <h3 class="mb-3 text-lg font-semibold text-slate-800 dark:text-slate-200">Least Expensive</h3>
       <ol class="space-y-2">
-        {#each data.leastExpensive as item}
+        {#each data.leastExpensive as item (item.rank)}
           <li class="flex items-center gap-3 text-sm">
             <span
               class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold dark:bg-gray-800"

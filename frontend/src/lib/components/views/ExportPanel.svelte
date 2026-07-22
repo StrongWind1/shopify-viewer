@@ -96,7 +96,7 @@
 </script>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-  {#each buttons as btn}
+  {#each buttons as btn (btn.id)}
     <button
       type="button"
       onclick={btn.action}

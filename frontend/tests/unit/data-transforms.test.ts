@@ -174,7 +174,7 @@ describe("toPriceAnalysis", () => {
       makeProduct({ id: 2, variants: [{ ...makeProduct().variants[0]!, price: "20.00" }] }),
       makeProduct({ id: 3, variants: [{ ...makeProduct().variants[0]!, price: "30.00" }] }),
     ];
-    const analysis = toPriceAnalysis(products, "test.com");
+    const analysis = toPriceAnalysis(products);
     expect(analysis.totalProducts).toBe(3);
     expect(analysis.totalVariants).toBe(3);
     expect(analysis.minPrice).toBe(10);
@@ -189,7 +189,7 @@ describe("toPriceAnalysis", () => {
         variants: [{ ...makeProduct().variants[0]!, price: "25.00", compare_at_price: "50.00" }],
       }),
     ];
-    const analysis = toPriceAnalysis(products, "test.com");
+    const analysis = toPriceAnalysis(products);
     expect(analysis.saleItems.count).toBe(1);
     expect(analysis.saleItems.averageDiscount).toBe(50);
     expect(analysis.saleItems.totalSavings).toBe(25);
@@ -203,7 +203,7 @@ describe("toPriceAnalysis", () => {
         variants: [{ ...makeProduct().variants[0]!, price: String((i + 1) * 10) }],
       }),
     );
-    const analysis = toPriceAnalysis(products, "test.com");
+    const analysis = toPriceAnalysis(products);
     expect(analysis.mostExpensive).toHaveLength(5);
     expect(analysis.mostExpensive[0]?.price).toBe(60);
     expect(analysis.leastExpensive[0]?.price).toBe(10);

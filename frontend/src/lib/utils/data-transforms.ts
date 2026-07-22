@@ -94,7 +94,7 @@ export function toCategoryGroups(
   return result.toSorted((a, b) => b.productCount - a.productCount);
 }
 
-export function toPriceAnalysis(products: ShopifyProduct[], domain: string): PriceAnalysis {
+export function toPriceAnalysis(products: ShopifyProduct[]): PriceAnalysis {
   const allPrices: number[] = [];
   let totalVariants = 0;
   let saleCount = 0;

@@ -25,7 +25,7 @@
   class="flex gap-1 overflow-x-auto border-b border-gray-200 dark:border-gray-700"
   aria-label="View tabs"
 >
-  {#each tabs as tab}
+  {#each tabs as tab (tab.id)}
     {@const Icon = tab.icon}
     <button
       type="button"

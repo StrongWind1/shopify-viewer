@@ -1,5 +1,6 @@
 <script lang="ts">
   import { ChevronRight, ChevronDown } from "@lucide/svelte";
+  import { SvelteSet } from "svelte/reactivity";
   import Badge from "../shared/Badge.svelte";
   import type { CategoryGroup } from "../../types/shopify-types.js";
   import { formatPrice } from "../../utils/price-utils.js";
@@ -11,23 +12,21 @@
 
   const { groups, currency = undefined }: Props = $props();
 
-  let expanded = $state<Set<string>>(new Set());
+  let expanded = new SvelteSet<string>();
 
   function toggle(name: string) {
-    const next = new Set(expanded);
-    if (next.has(name)) {
-      next.delete(name);
+    if (expanded.has(name)) {
+      expanded.delete(name);
     } else {
-      next.add(name);
+      expanded.add(name);
     }
-    expanded = next;
   }
 
   function expandAll() {
-    expanded = new Set(groups.map((g) => g.name));
+    expanded = new SvelteSet(groups.map((g) => g.name));
   }
   function collapseAll() {
-    expanded = new Set();
+    expanded.clear();
   }
 
   function rateColor(rate: number): string {
@@ -51,7 +50,7 @@
     >
   </div>
 
-  {#each groups as group}
+  {#each groups as group (group.name)}
     {@const isOpen = expanded.has(group.name)}
     <div class="rounded-lg border border-gray-200 dark:border-gray-700">
       <button
@@ -78,7 +77,7 @@
       {#if isOpen}
         <div class="border-t border-gray-200 dark:border-gray-700">
           <ul class="divide-y divide-gray-100 dark:divide-gray-800">
-            {#each group.products as product}
+            {#each group.products as product (product.id)}
               <li class="flex items-center justify-between px-6 py-2 text-sm">
                 <a
                   href={product.url}

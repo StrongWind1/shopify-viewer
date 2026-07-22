@@ -1,14 +1,11 @@
 import type {
   ShopifyProduct,
   ShopifyMeta,
-  ProductSummary,
-  ProductListRow,
-  CategoryGroup,
-  PriceAnalysis,
   RecentStore,
   AppState,
   ViewId,
 } from "../types/shopify-types.js";
+import { SvelteDate } from "svelte/reactivity";
 import {
   toProductSummaries,
   toProductListRows,
@@ -29,7 +26,7 @@ let fetchedAt = $state<Date | null>(null);
 const productSummaries = $derived(domain !== "" ? toProductSummaries(products, domain) : []);
 const productListRows = $derived(domain !== "" ? toProductListRows(products, domain) : []);
 const categoryGroups = $derived(toCategoryGroups(productSummaries, products));
-const priceAnalysis = $derived(products.length > 0 ? toPriceAnalysis(products, domain) : null);
+const priceAnalysis = $derived(products.length > 0 ? toPriceAnalysis(products) : null);
 
 function loadRecentStores(): RecentStore[] {
   try {
@@ -144,7 +141,7 @@ export const store = {
   },
 
   onFetchComplete(storeDomain: string, storeName: string) {
-    fetchedAt = new Date();
+    fetchedAt = new SvelteDate();
     addRecentStore(storeDomain, storeName);
     syncUrlParams();
   },

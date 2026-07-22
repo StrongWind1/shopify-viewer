@@ -119,7 +119,7 @@
       class="absolute top-full right-0 left-0 z-10 mt-1 rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-slate-800"
     >
       <ul class="max-h-64 overflow-y-auto py-1">
-        {#each recentStores.slice(0, 10) as recent}
+        {#each recentStores.slice(0, 10) as recent (recent.domain)}
           <li>
             <button
               type="button"

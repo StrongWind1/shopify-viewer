@@ -2,8 +2,7 @@
   lang="ts"
   generics="T"
 >
-  import { ChevronUp, ChevronDown } from "@lucide/svelte";
-  import VirtualList from "./VirtualList.svelte";
+  import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "@lucide/svelte";
 
   interface Column<Row> {
     key: string;
@@ -19,6 +18,7 @@
     defaultSortKey?: string;
     defaultSortDir?: "asc" | "desc";
     rowClass?: (row: T) => string;
+    pageSize?: number;
   }
 
   type CellSnippet = import("svelte").Snippet<[{ row: T; column: Column<T> }]>;
@@ -30,11 +30,13 @@
     rowClass = () => "",
     defaultSortKey = "",
     defaultSortDir = "asc" as "asc" | "desc",
+    pageSize = 100,
   }: Props & { cell: CellSnippet } = $props();
 
   let sortKey = $state(defaultSortKey);
   let sortDir = $state<"asc" | "desc">(defaultSortDir);
   let clickCount = $state(0);
+  let currentPage = $state(0);
 
   function handleSort(key: string) {
     if (sortKey === key) {
@@ -51,6 +53,7 @@
       sortDir = "asc";
       clickCount = 0;
     }
+    currentPage = 0;
   }
 
   const sortedData = $derived.by(() => {
@@ -72,6 +75,20 @@
         return (Number(va) - Number(vb)) * dir;
       return 0;
     });
+  });
+
+  const totalPages = $derived(Math.ceil(sortedData.length / pageSize));
+  const needsPagination = $derived(sortedData.length > pageSize);
+  const pageData = $derived(
+    needsPagination
+      ? sortedData.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+      : sortedData,
+  );
+
+  $effect(() => {
+    if (currentPage >= totalPages && totalPages > 0) {
+      currentPage = totalPages - 1;
+    }
   });
 </script>
 
@@ -116,20 +133,73 @@
       </tr>
     </thead>
     <tbody>
-      <VirtualList
-        items={sortedData}
-        itemHeight={40}
-      >
-        {#snippet children({ item: row })}
-          <tr class="border-b border-gray-100 dark:border-gray-800 {rowClass(row)}">
-            {#each columns as column (column.key)}
-              <td class="px-3 py-2 {column.align === 'right' ? 'text-right' : ''}">
-                {@render cell({ row, column })}
-              </td>
-            {/each}
-          </tr>
-        {/snippet}
-      </VirtualList>
+      {#each pageData as row, i (i)}
+        <tr class="border-b border-gray-100 dark:border-gray-800 {rowClass(row)}">
+          {#each columns as column (column.key)}
+            <td class="px-3 py-2 {column.align === 'right' ? 'text-right' : ''}">
+              {@render cell({ row, column })}
+            </td>
+          {/each}
+        </tr>
+      {/each}
     </tbody>
   </table>
+
+  {#if needsPagination}
+    <div
+      class="flex items-center justify-between border-t border-gray-200 px-3 py-2 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-400"
+    >
+      <span>
+        {currentPage * pageSize + 1}–{Math.min((currentPage + 1) * pageSize, sortedData.length)} of {sortedData.length}
+        rows
+      </span>
+      <div class="flex items-center gap-1">
+        <button
+          type="button"
+          disabled={currentPage === 0}
+          onclick={() => {
+            currentPage = 0;
+          }}
+          class="cursor-pointer rounded p-1 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:hover:bg-gray-800"
+          aria-label="First page"
+        >
+          <ChevronLeft class="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          disabled={currentPage === 0}
+          onclick={() => {
+            currentPage--;
+          }}
+          class="cursor-pointer rounded p-1 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:hover:bg-gray-800"
+          aria-label="Previous page"
+        >
+          <ChevronLeft class="h-4 w-4" />
+        </button>
+        <span class="px-2">Page {currentPage + 1} of {totalPages}</span>
+        <button
+          type="button"
+          disabled={currentPage >= totalPages - 1}
+          onclick={() => {
+            currentPage++;
+          }}
+          class="cursor-pointer rounded p-1 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:hover:bg-gray-800"
+          aria-label="Next page"
+        >
+          <ChevronRight class="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          disabled={currentPage >= totalPages - 1}
+          onclick={() => {
+            currentPage = totalPages - 1;
+          }}
+          class="cursor-pointer rounded p-1 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:hover:bg-gray-800"
+          aria-label="Last page"
+        >
+          <ChevronRight class="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  {/if}
 </div>

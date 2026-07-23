@@ -12,10 +12,10 @@ Returns all published products with variants, images, and options.
 
 #### Query Parameters
 
-| Parameter | Type | Default | Max | Description |
-|---|---|---|---|---|
-| `limit` | integer | 30 | 250 | Products per page. Values above 250 are silently clamped. Values of 0 or negative return the default (30). |
-| `page` | integer | 1 | — | 1-indexed page number. Values of 0 or negative return page 1. |
+| Parameter | Type    | Default | Max | Description                                                                                                |
+| --------- | ------- | ------- | --- | ---------------------------------------------------------------------------------------------------------- |
+| `limit`   | integer | 30      | 250 | Products per page. Values above 250 are silently clamped. Values of 0 or negative return the default (30). |
+| `page`    | integer | 1       | —   | 1-indexed page number. Values of 0 or negative return page 1.                                              |
 
 No other query parameters are supported on this endpoint. Parameters like `collection_id`, `ids`, `product_type`, `handle`, `fields`, `since_id`, `vendor`, or `status` are Admin REST API only and require authentication.
 
@@ -31,66 +31,66 @@ No pagination metadata is included in the response — no total count, no Link h
 
 #### Product Object
 
-| Field | Type | Nullable | Description |
-|---|---|---|---|
-| `id` | integer | no | Unique product ID across Shopify |
-| `title` | string | no | Product display name |
-| `handle` | string | no | URL-safe slug (used in `/products/<handle>` URLs) |
-| `body_html` | string | no | HTML product description |
-| `published_at` | string (ISO 8601) | no | Publication timestamp with timezone offset |
-| `created_at` | string (ISO 8601) | no | Creation timestamp |
-| `updated_at` | string (ISO 8601) | no | Last modification timestamp |
-| `vendor` | string | no | Manufacturer or brand name |
-| `product_type` | string | no | Category classification (can be empty string) |
-| `tags` | array of strings | no | Product tags as individual array elements |
-| `variants` | array of Variant | no | Product variants (at least one) |
-| `images` | array of Image | no | Product images (can be empty) |
-| `options` | array of Option | no | Product options (size, color, etc.) |
+| Field          | Type              | Nullable | Description                                       |
+| -------------- | ----------------- | -------- | ------------------------------------------------- |
+| `id`           | integer           | no       | Unique product ID across Shopify                  |
+| `title`        | string            | no       | Product display name                              |
+| `handle`       | string            | no       | URL-safe slug (used in `/products/<handle>` URLs) |
+| `body_html`    | string            | no       | HTML product description                          |
+| `published_at` | string (ISO 8601) | no       | Publication timestamp with timezone offset        |
+| `created_at`   | string (ISO 8601) | no       | Creation timestamp                                |
+| `updated_at`   | string (ISO 8601) | no       | Last modification timestamp                       |
+| `vendor`       | string            | no       | Manufacturer or brand name                        |
+| `product_type` | string            | no       | Category classification (can be empty string)     |
+| `tags`         | array of strings  | no       | Product tags as individual array elements         |
+| `variants`     | array of Variant  | no       | Product variants (at least one)                   |
+| `images`       | array of Image    | no       | Product images (can be empty)                     |
+| `options`      | array of Option   | no       | Product options (size, color, etc.)               |
 
 #### Variant Object
 
-| Field | Type | Nullable | Description |
-|---|---|---|---|
-| `id` | integer | no | Unique variant ID |
-| `product_id` | integer | no | Parent product ID |
-| `title` | string | no | Combined option values (e.g., "Regular / Small") or "Default Title" for single-variant products |
-| `price` | string | no | Price as decimal string (e.g., `"34.99"`) — NOT a number |
-| `compare_at_price` | string | yes | Original/sale comparison price; `null` if no comparison price set |
-| `sku` | string | no | Stock keeping unit (can be empty string) |
-| `position` | integer | no | Display order (1-indexed) |
-| `option1` | string | yes | First option value |
-| `option2` | string | yes | Second option value |
-| `option3` | string | yes | Third option value |
-| `grams` | integer | no | Weight in grams (can be 0) |
-| `requires_shipping` | boolean | no | Whether physical shipping is required |
-| `taxable` | boolean | no | Whether tax applies |
-| `available` | boolean | no | Whether the variant is in stock |
-| `featured_image` | Image | yes | Variant-specific image when assigned; `null` otherwise |
-| `created_at` | string (ISO 8601) | no | Creation timestamp |
-| `updated_at` | string (ISO 8601) | no | Last modification timestamp |
+| Field               | Type              | Nullable | Description                                                                                     |
+| ------------------- | ----------------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `id`                | integer           | no       | Unique variant ID                                                                               |
+| `product_id`        | integer           | no       | Parent product ID                                                                               |
+| `title`             | string            | no       | Combined option values (e.g., "Regular / Small") or "Default Title" for single-variant products |
+| `price`             | string            | no       | Price as decimal string (e.g., `"34.99"`) — NOT a number                                        |
+| `compare_at_price`  | string            | yes      | Original/sale comparison price; `null` if no comparison price set                               |
+| `sku`               | string            | no       | Stock keeping unit (can be empty string)                                                        |
+| `position`          | integer           | no       | Display order (1-indexed)                                                                       |
+| `option1`           | string            | yes      | First option value                                                                              |
+| `option2`           | string            | yes      | Second option value                                                                             |
+| `option3`           | string            | yes      | Third option value                                                                              |
+| `grams`             | integer           | no       | Weight in grams (can be 0)                                                                      |
+| `requires_shipping` | boolean           | no       | Whether physical shipping is required                                                           |
+| `taxable`           | boolean           | no       | Whether tax applies                                                                             |
+| `available`         | boolean           | no       | Whether the variant is in stock                                                                 |
+| `featured_image`    | Image             | yes      | Variant-specific image when assigned; `null` otherwise                                          |
+| `created_at`        | string (ISO 8601) | no       | Creation timestamp                                                                              |
+| `updated_at`        | string (ISO 8601) | no       | Last modification timestamp                                                                     |
 
 #### Image Object
 
-| Field | Type | Nullable | Description |
-|---|---|---|---|
-| `id` | integer | no | Unique image ID |
-| `product_id` | integer | no | Parent product ID |
-| `position` | integer | no | Display order (1-indexed) |
-| `created_at` | string (ISO 8601) | no | Creation timestamp |
-| `updated_at` | string (ISO 8601) | no | Last modification timestamp |
-| `src` | string (URL) | no | Full CDN URL (`https://cdn.shopify.com/s/files/...`) |
-| `width` | integer | no | Image width in pixels |
-| `height` | integer | no | Image height in pixels |
-| `alt` | string | yes | Alt text; `null` if not set |
-| `variant_ids` | array of integers | no | IDs of variants associated with this image (empty if unassigned) |
+| Field         | Type              | Nullable | Description                                                      |
+| ------------- | ----------------- | -------- | ---------------------------------------------------------------- |
+| `id`          | integer           | no       | Unique image ID                                                  |
+| `product_id`  | integer           | no       | Parent product ID                                                |
+| `position`    | integer           | no       | Display order (1-indexed)                                        |
+| `created_at`  | string (ISO 8601) | no       | Creation timestamp                                               |
+| `updated_at`  | string (ISO 8601) | no       | Last modification timestamp                                      |
+| `src`         | string (URL)      | no       | Full CDN URL (`https://cdn.shopify.com/s/files/...`)             |
+| `width`       | integer           | no       | Image width in pixels                                            |
+| `height`      | integer           | no       | Image height in pixels                                           |
+| `alt`         | string            | yes      | Alt text; `null` if not set                                      |
+| `variant_ids` | array of integers | no       | IDs of variants associated with this image (empty if unassigned) |
 
 #### Option Object (List Endpoint — Reduced Fields)
 
-| Field | Type | Description |
-|---|---|---|
-| `name` | string | Option name (e.g., "Color", "Size") |
-| `position` | integer | Display order (1-indexed) |
-| `values` | array of strings | Available values (e.g., `["Small", "Medium", "Large"]`) |
+| Field      | Type             | Description                                             |
+| ---------- | ---------------- | ------------------------------------------------------- |
+| `name`     | string           | Option name (e.g., "Color", "Size")                     |
+| `position` | integer          | Display order (1-indexed)                               |
+| `values`   | array of strings | Available values (e.g., `["Small", "Medium", "Large"]`) |
 
 The list endpoint option object is missing `id` and `product_id` which are present in the single product endpoint.
 
@@ -112,33 +112,33 @@ Singular `product` key (not `products`).
 
 **Product-level:**
 
-| Field | Type | Description |
-|---|---|---|
-| `image` | Image | Primary/featured product image |
+| Field             | Type   | Description                         |
+| ----------------- | ------ | ----------------------------------- |
+| `image`           | Image  | Primary/featured product image      |
 | `published_scope` | string | Publishing scope (e.g., `"global"`) |
-| `template_suffix` | string | Liquid template suffix |
+| `template_suffix` | string | Liquid template suffix              |
 
 **Variant-level:**
 
-| Field | Type | Nullable | Description |
-|---|---|---|---|
-| `barcode` | string | yes | Barcode/UPC |
-| `fulfillment_service` | string | no | Fulfillment handler (e.g., `"manual"`) |
-| `inventory_management` | string | no | Tracking system (e.g., `"shopify"`) |
-| `image_id` | integer | yes | Associated image ID |
-| `weight` | float | no | Weight value |
-| `weight_unit` | string | no | Weight unit (e.g., `"lb"`, `"kg"`) |
-| `tax_code` | string | no | Tax classification code |
-| `price_currency` | string | no | Currency code (e.g., `"USD"`) |
-| `compare_at_price_currency` | string | no | Compare-at price currency |
-| `quantity_rule` | object | no | `{min, max, increment}` for quantity restrictions |
-| `quantity_price_breaks` | array | no | Volume pricing tiers |
+| Field                       | Type    | Nullable | Description                                       |
+| --------------------------- | ------- | -------- | ------------------------------------------------- |
+| `barcode`                   | string  | yes      | Barcode/UPC                                       |
+| `fulfillment_service`       | string  | no       | Fulfillment handler (e.g., `"manual"`)            |
+| `inventory_management`      | string  | no       | Tracking system (e.g., `"shopify"`)               |
+| `image_id`                  | integer | yes      | Associated image ID                               |
+| `weight`                    | float   | no       | Weight value                                      |
+| `weight_unit`               | string  | no       | Weight unit (e.g., `"lb"`, `"kg"`)                |
+| `tax_code`                  | string  | no       | Tax classification code                           |
+| `price_currency`            | string  | no       | Currency code (e.g., `"USD"`)                     |
+| `compare_at_price_currency` | string  | no       | Compare-at price currency                         |
+| `quantity_rule`             | object  | no       | `{min, max, increment}` for quantity restrictions |
+| `quantity_price_breaks`     | array   | no       | Volume pricing tiers                              |
 
 **Option-level:**
 
-| Field | Type | Description |
-|---|---|---|
-| `id` | integer | Unique option ID |
+| Field        | Type    | Description       |
+| ------------ | ------- | ----------------- |
+| `id`         | integer | Unique option ID  |
 | `product_id` | integer | Parent product ID |
 
 #### Tags Format Inconsistency
@@ -195,13 +195,13 @@ Returns all published collections.
 
 Same schema as `/products.json` but scoped to a specific collection by its URL handle (not numeric ID). Supports `limit`, `page`, and additionally `sort_by`:
 
-| `sort_by` Value | Description |
-|---|---|
-| `price-ascending` | Lowest price first |
-| `price-descending` | Highest price first |
-| `best-selling` | Best sellers first |
-| `created-ascending` | Oldest first |
-| `created-descending` | Newest first |
+| `sort_by` Value      | Description         |
+| -------------------- | ------------------- |
+| `price-ascending`    | Lowest price first  |
+| `price-descending`   | Highest price first |
+| `best-selling`       | Best sellers first  |
+| `created-ascending`  | Oldest first        |
+| `created-descending` | Newest first        |
 
 ## Pagination Strategy
 
@@ -244,16 +244,16 @@ This is why the Cloudflare Workers proxy exists — the browser fetches from the
 
 These fields require authenticated Admin API access and will never appear in public endpoint responses:
 
-| Field | Description |
-|---|---|
-| `admin_graphql_api_id` | GraphQL API node ID |
-| `status` | Product status (active/archived/draft) |
-| `inventory_quantity` | Stock level per variant |
-| `old_inventory_quantity` | Previous stock level |
-| `inventory_item_id` | Inventory tracking item ID |
-| `inventory_policy` | Backorder behavior |
-| `presentment_prices` | Multi-currency pricing |
-| `metafields` | Custom metadata |
+| Field                    | Description                            |
+| ------------------------ | -------------------------------------- |
+| `admin_graphql_api_id`   | GraphQL API node ID                    |
+| `status`                 | Product status (active/archived/draft) |
+| `inventory_quantity`     | Stock level per variant                |
+| `old_inventory_quantity` | Previous stock level                   |
+| `inventory_item_id`      | Inventory tracking item ID             |
+| `inventory_policy`       | Backorder behavior                     |
+| `presentment_prices`     | Multi-currency pricing                 |
+| `metafields`             | Custom metadata                        |
 
 ## Known Quirks
 

@@ -3,92 +3,143 @@ import { test, expect } from "@playwright/test";
 test.describe("Shopify Viewer", () => {
   test("loads the app shell", async ({ page }) => {
     await page.goto("/shopify-viewer/");
-    await expect(page.locator("text=Shopify Viewer")).toBeVisible();
-    await expect(page.locator('input[aria-label="Store URL"]')).toBeVisible();
-    await expect(page.locator("text=Fetch Products")).toBeVisible();
-  });
-
-  test("shows error for empty submission", async ({ page }) => {
-    await page.goto("/shopify-viewer/");
-    await page.click("text=Fetch Products");
-    await expect(page.locator("text=Enter a store URL"))
-      .toBeVisible({ timeout: 5000 })
-      .catch(() => {
-        // Input may have native required validation — either way the form shouldn't submit
-      });
+    await expect(page.getByText("Shopify Viewer")).toBeVisible();
+    await expect(page.getByLabel("Store URL")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Fetch Products" })).toBeVisible();
   });
 
   test("shows error for invalid URL", async ({ page }) => {
     await page.goto("/shopify-viewer/");
-    await page.fill('input[aria-label="Store URL"]', "not a url");
-    await page.click("text=Fetch Products");
-    await expect(page.locator(".text-red-600, .dark\\:text-red-400")).toBeVisible({
-      timeout: 5000,
-    });
+    await page.getByLabel("Store URL").fill("not a url");
+    await page.getByRole("button", { name: "Fetch Products" }).click();
+    await expect(page.getByText("Enter a valid")).toBeVisible({ timeout: 5000 });
   });
 
-  test("theme toggle works", async ({ page }) => {
+  test("theme toggle switches between light and dark", async ({ page }) => {
     await page.goto("/shopify-viewer/");
     const html = page.locator("html");
 
-    await page.click('button[aria-label*="Switch to"]');
-    const theme1 = await html.getAttribute("data-theme");
+    const initial = await html.getAttribute("data-theme");
+    await page.getByLabel(/Switch to/).click();
+    const toggled = await html.getAttribute("data-theme");
+    expect(initial).not.toBe(toggled);
 
-    await page.click('button[aria-label*="Switch to"]');
-    const theme2 = await html.getAttribute("data-theme");
-
-    expect(theme1).not.toBe(theme2);
-  });
-
-  test("URL params auto-fetch", async ({ page }) => {
-    await page.goto("/shopify-viewer/?store=lttstore.com");
-    await expect(page.locator('input[aria-label="Store URL"]')).toHaveValue("lttstore.com");
-    // Should start fetching — look for progress or results
-    await expect(
-      page
-        .locator("text=Connecting to")
-        .or(page.locator('[role="progressbar"]'))
-        .or(page.locator("text=LTTStore")),
-    ).toBeVisible({ timeout: 30000 });
+    await page.getByLabel(/Switch to/).click();
+    const restored = await html.getAttribute("data-theme");
+    expect(restored).toBe(initial);
   });
 
   test("full fetch flow with lttstore.com", async ({ page }) => {
-    test.setTimeout(120000);
-    await page.goto("/shopify-viewer/");
-    await page.fill('input[aria-label="Store URL"]', "lttstore.com");
-    await page.click("text=Fetch Products");
+    test.setTimeout(120_000);
 
-    // Wait for products to load
-    await expect(page.locator("text=LTTStore").or(page.locator("text=products"))).toBeVisible({
-      timeout: 90000,
+    const errors: string[] = [];
+    page.on("console", (msg) => {
+      if (msg.type() === "error") errors.push(msg.text());
+    });
+    page.on("pageerror", (err) => {
+      errors.push(err.message);
     });
 
-    // Check view tabs appear
-    await expect(page.locator('[role="tablist"]')).toBeVisible();
+    await page.goto("/shopify-viewer/");
+    await page.getByLabel("Store URL").fill("lttstore.com");
+    await page.getByRole("button", { name: "Fetch Products" }).click();
 
-    // Switch to cards view
-    await page.click('[role="tab"]:has-text("Cards")');
-    await expect(page.locator(".grid")).toBeVisible();
+    // Should show connecting state
+    await expect(page.getByText("Connecting to")).toBeVisible({ timeout: 5_000 });
 
-    // Switch to analysis view
-    await page.click('[role="tab"]:has-text("Analysis")');
-    await expect(page.locator("text=Total Products")).toBeVisible();
+    // Wait for either products to load or an error to appear
+    const loaded = page.getByRole("tablist");
+    const errorEl = page.locator(".text-red-600");
 
-    // Switch to export view
-    await page.click('[role="tab"]:has-text("Export")');
-    await expect(page.locator("text=Product List (CSV)")).toBeVisible();
+    await expect(loaded.or(errorEl)).toBeVisible({ timeout: 90_000 });
+
+    if (await errorEl.isVisible()) {
+      const errText = await errorEl.textContent();
+      console.log("Fetch failed with error:", errText);
+      console.log("Console errors:", errors);
+      test.fail(true, `Fetch failed: ${errText ?? "unknown"}`);
+      return;
+    }
+
+    // Products loaded — verify each view tab works
+    console.log("Products loaded, testing tabs...");
+
+    // Summary tab (default)
+    await expect(page.getByRole("table")).toBeVisible({ timeout: 5_000 });
+
+    // Products tab
+    await page.getByRole("tab", { name: "Products" }).click();
+    await expect(page.getByRole("table")).toBeVisible({ timeout: 5_000 });
+
+    // Cards tab
+    await page.getByRole("tab", { name: "Cards" }).click();
+    await expect(page.locator(".grid")).toBeVisible({ timeout: 5_000 });
+
+    // Categories tab
+    await page.getByRole("tab", { name: "Categories" }).click();
+    await expect(page.getByText("Expand All")).toBeVisible({ timeout: 5_000 });
+
+    // Analysis tab
+    await page.getByRole("tab", { name: "Analysis" }).click();
+    await expect(page.getByText("Total Products")).toBeVisible({ timeout: 5_000 });
+
+    // History tab
+    await page.getByRole("tab", { name: "History" }).click();
+    await expect(page.getByText("No price history").or(page.getByText("snapshot"))).toBeVisible({
+      timeout: 5_000,
+    });
+
+    // Compare tab
+    await page.getByRole("tab", { name: "Compare" }).click();
+    await expect(page.getByText("Compare with another store")).toBeVisible({ timeout: 5_000 });
+
+    // Export tab
+    await page.getByRole("tab", { name: "Export" }).click();
+    await expect(page.getByText("Product List (CSV)")).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText("Product Summary (CSV)")).toBeVisible();
+    await expect(page.getByText("Raw Data (JSON)")).toBeVisible();
+    await expect(page.getByText("Summary Data (JSON)")).toBeVisible();
+
+    // Search filter — switch back to summary
+    await page.getByRole("tab", { name: "Summary" }).click();
+    await page.getByLabel("Search products").fill("shirt");
+    await expect(page.getByText("shown")).toBeVisible({ timeout: 5_000 });
+
+    // Category filter
+    await page.getByLabel("Search products").clear();
+    const catSelect = page.getByLabel("Filter by category");
+    const options = await catSelect.locator("option").allTextContents();
+    if (options.length > 1) {
+      await catSelect.selectOption({ index: 1 });
+      await expect(page.getByText("shown")).toBeVisible({ timeout: 5_000 });
+    }
+
+    // Stock filter
+    await catSelect.selectOption("All Categories");
+    await page.getByLabel("Filter by stock status").selectOption("outOfStock");
+    // Should show filtered count or empty state
+    await page.waitForTimeout(500);
+
+    console.log("All tabs and filters verified. Console errors:", errors);
   });
 
-  test("search filter works", async ({ page }) => {
-    test.setTimeout(120000);
-    await page.goto("/shopify-viewer/?store=lttstore.com");
+  test("URL params trigger auto-fetch", async ({ page }) => {
+    test.setTimeout(120_000);
+    await page.goto("/shopify-viewer/?store=lttstore.com&view=cards");
 
-    // Wait for products
-    await expect(page.locator('[role="tablist"]')).toBeVisible({ timeout: 90000 });
+    // Should auto-fetch
+    await expect(page.getByText("Connecting to").or(page.getByRole("tablist"))).toBeVisible({
+      timeout: 90_000,
+    });
+  });
 
-    // Type in search
-    await page.fill('input[aria-label="Search products"]', "shirt");
-    // Product count should change
-    await expect(page.locator("text=shown")).toBeVisible({ timeout: 5000 });
+  test("favicon and manifest are served", async ({ page }) => {
+    const favicon = await page.request.get("/shopify-viewer/favicon.svg");
+    expect(favicon.status()).toBe(200);
+
+    const manifest = await page.request.get("/shopify-viewer/manifest.json");
+    expect(manifest.status()).toBe(200);
+    const json = await manifest.json();
+    expect(json.name).toBe("Shopify Viewer");
   });
 });

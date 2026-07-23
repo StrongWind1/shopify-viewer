@@ -1,10 +1,10 @@
 name: Deploy Worker
 
-on:
+"on":
   push:
     branches: [main]
     paths:
-      - "worker/**"
+      - worker/**
   workflow_dispatch:
 
 permissions:

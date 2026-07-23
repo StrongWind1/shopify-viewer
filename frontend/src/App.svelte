@@ -14,6 +14,7 @@
   import PriceHistory from "./lib/components/views/PriceHistory.svelte";
   import StoreComparison from "./lib/components/views/StoreComparison.svelte";
   import ExportPanel from "./lib/components/views/ExportPanel.svelte";
+  import ExampleStores from "./lib/components/ExampleStores.svelte";
   import { store } from "./lib/stores/app-store.svelte.js";
   import {
     validateStoreInput,
@@ -230,6 +231,15 @@
           store.clearRecentStores();
         }}
       />
+
+      {#if !hasProducts && !isLoading}
+        <ExampleStores
+          onselect={(domain) => {
+            inputValue = domain;
+            void handleFetch(domain);
+          }}
+        />
+      {/if}
 
       {#if store.appState.status === "fetching_meta"}
         <p class="text-sm text-gray-500 dark:text-gray-400">Connecting to {store.domain}...</p>

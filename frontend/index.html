@@ -11,26 +11,89 @@
       name="description"
       content="Browse and analyze product data from any Shopify store"
     />
+
+    <!-- Security -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; base-uri 'self'; form-action 'none'; object-src 'none'; frame-src 'none'; img-src 'self' https://cdn.shopify.com; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://shopify-viewer-proxy.strongwind.workers.dev; font-src 'self'; manifest-src 'self'"
+    />
+    <meta
+      name="referrer"
+      content="no-referrer"
+    />
+
+    <!-- Theme -->
     <meta
       name="color-scheme"
       content="light dark"
     />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#ffffff"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#0f172a"
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:type"
+      content="website"
+    />
+    <meta
+      property="og:title"
+      content="Shopify Viewer"
+    />
+    <meta
+      property="og:description"
+      content="Browse and analyze product data from any Shopify store"
+    />
+    <meta
+      property="og:url"
+      content="https://strongwind.dev/shopify-viewer/"
+    />
+    <meta
+      name="twitter:card"
+      content="summary"
+    />
+    <meta
+      name="twitter:title"
+      content="Shopify Viewer"
+    />
+    <meta
+      name="twitter:description"
+      content="Browse and analyze product data from any Shopify store"
+    />
+
+    <!-- Icons & Manifest -->
     <link
       rel="icon"
       href="/shopify-viewer/favicon.svg"
       type="image/svg+xml"
     />
     <link
+      rel="apple-touch-icon"
+      href="/shopify-viewer/icon-192.png"
+    />
+    <link
       rel="manifest"
       href="/shopify-viewer/manifest.json"
     />
-    <meta
-      name="theme-color"
-      content="#2563eb"
+    <link
+      rel="canonical"
+      href="https://strongwind.dev/shopify-viewer/"
     />
   </head>
   <body>
     <div id="app"></div>
+    <noscript>
+      <p style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif">
+        Shopify Viewer requires JavaScript to run.
+      </p>
+    </noscript>
     <script
       type="module"
       src="/src/main.ts"

@@ -8,12 +8,9 @@
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp", "workerd"]
-  },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250620.0",
-    "typescript": "~6.0.2",
-    "wrangler": "^4.22.0"
+    "@cloudflare/workers-types": "^5.20260723.1",
+    "typescript": "~7.0.2",
+    "wrangler": "^4.113.0"
   }
 }

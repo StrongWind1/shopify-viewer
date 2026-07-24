@@ -9,7 +9,7 @@
     "noImplicitOverride": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "types": ["@cloudflare/workers-types/2023-07-01"],
+    "types": ["@cloudflare/workers-types"],
     "lib": ["es2023"]
   },
   "include": ["src/**/*.ts"]

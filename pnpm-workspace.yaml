@@ -1,3 +1,7 @@
+packages:
+  - frontend
+  - worker
+
 allowBuilds:
   esbuild: true
   sharp: true

@@ -154,3 +154,19 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346  # v5.0.1
+
+  yamllint:
+    name: YAML lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Lint YAML in .github
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user --quiet yamllint
+          python3 -m yamllint --strict -c .yamllint.yml .github

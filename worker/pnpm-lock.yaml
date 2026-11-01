@@ -12,7 +12,7 @@ importers:
         specifier: ^5.20260906.1
         version: 5.20260906.1
       typescript:
-        specifier: ~6.0.3
+        specifier: '>=6.0.3 <7'
         version: 6.0.3
       wrangler:
         specifier: ^4.129.0

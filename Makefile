@@ -23,7 +23,7 @@ format: ## Run Prettier write + ESLint fix
 	cd frontend && pnpm exec eslint --fix .
 
 typecheck: ## Run svelte-check + tsc (worker)
-	cd frontend && pnpm exec svelte-check --tsconfig ./tsconfig.json
+	cd frontend && pnpm exec svelte-check --tsconfig ./tsconfig.app.json
 	cd worker && pnpm exec tsc --noEmit
 
 test: test-unit test-e2e ## Run all tests

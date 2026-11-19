@@ -92,8 +92,7 @@ shopify-viewer/
 │   ├── tsconfig.json
 │   ├── tsconfig.app.json
 │   ├── tsconfig.node.json
-│   ├── package.json
-│   └── pnpm-lock.yaml
+│   └── package.json
 ├── worker/                    # Cloudflare Workers proxy
 │   ├── src/
 │   │   └── index.ts           # Worker entry point
@@ -125,7 +124,9 @@ shopify-viewer/
 ├── SECURITY.md
 ├── LICENSE
 ├── README.md
-└── package.json               # Root workspace package.json
+├── package.json               # Root workspace package.json
+├── pnpm-workspace.yaml        # Workspace packages (frontend, worker)
+└── pnpm-lock.yaml             # Workspace lockfile (root, frontend, worker)
 ```
 
 ### Vanilla Svelte + Vite (Not SvelteKit)

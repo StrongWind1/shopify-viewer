@@ -242,7 +242,7 @@ All actions pinned by full commit SHA, never by tag:
 - `permissions` scoped to minimum required per job (default: `contents: read`).
 - `pnpm install --frozen-lockfile` for dependency installation.
 - `pnpm/action-setup` (SHA-pinned) to install pnpm in CI.
-- pnpm cache via `setup-node` with `cache-dependency-path` pointing to both `frontend/pnpm-lock.yaml` and `worker/pnpm-lock.yaml`.
+- pnpm cache via `setup-node` with `cache-dependency-path` pointing to both the root `pnpm-lock.yaml` (workspace lockfile used by `frontend/`) and `worker/pnpm-lock.yaml`.
 
 ## Testing
 

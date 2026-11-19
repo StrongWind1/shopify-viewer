@@ -36,7 +36,7 @@ jobs:
           node-version: "22"
           cache: pnpm
           cache-dependency-path: |
-            frontend/pnpm-lock.yaml
+            pnpm-lock.yaml
             worker/pnpm-lock.yaml
 
       - name: Install frontend dependencies
@@ -75,7 +75,7 @@ jobs:
           node-version: "22"
           cache: pnpm
           cache-dependency-path: |
-            frontend/pnpm-lock.yaml
+            pnpm-lock.yaml
             worker/pnpm-lock.yaml
 
       - name: Install frontend dependencies
@@ -120,7 +120,7 @@ jobs:
           node-version: "22"
           cache: pnpm
           cache-dependency-path: |
-            frontend/pnpm-lock.yaml
+            pnpm-lock.yaml
             worker/pnpm-lock.yaml
 
       - name: Install frontend dependencies

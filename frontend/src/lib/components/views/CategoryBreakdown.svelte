@@ -42,13 +42,17 @@
     <button
       type="button"
       onclick={expandAll}
-      class="cursor-pointer text-blue-600 hover:underline dark:text-blue-400">Expand All</button
+      class="cursor-pointer text-blue-600 hover:underline dark:text-blue-400"
     >
+      Expand All
+    </button>
     <button
       type="button"
       onclick={collapseAll}
-      class="cursor-pointer text-blue-600 hover:underline dark:text-blue-400">Collapse All</button
+      class="cursor-pointer text-blue-600 hover:underline dark:text-blue-400"
     >
+      Collapse All
+    </button>
   </div>
 
   {#each groups as group (group.name)}
@@ -89,9 +93,9 @@
                   {product.title}
                 </a>
                 <div class="flex items-center gap-3">
-                  <span class="text-gray-600 dark:text-gray-400"
-                    >{formatPrice(product.price, currency)}</span
-                  >
+                  <span class="text-gray-600 dark:text-gray-400">
+                    {formatPrice(product.price, currency)}
+                  </span>
                   <Badge
                     variant={product.inStock ? "inStock" : "outOfStock"}
                     label={product.inStock ? "YES" : "NO"}
@@ -117,30 +121,33 @@
               <th
                 scope="col"
                 class="px-4 py-2 text-left font-semibold text-gray-700 dark:text-gray-300"
-                >Collection</th
               >
+                Collection
+              </th>
               <th
                 scope="col"
                 class="px-4 py-2 text-right font-semibold text-gray-700 dark:text-gray-300"
-                >Products</th
               >
+                Products
+              </th>
               <th
                 scope="col"
                 class="px-4 py-2 text-left font-semibold text-gray-700 dark:text-gray-300"
-                >Last Updated</th
               >
+                Last Updated
+              </th>
             </tr>
           </thead>
           <tbody>
             {#each collections as col (col.handle)}
               <tr class="border-b border-gray-100 dark:border-gray-800">
                 <td class="px-4 py-2 text-slate-800 dark:text-slate-200">{col.title}</td>
-                <td class="px-4 py-2 text-right text-gray-600 dark:text-gray-400"
-                  >{col.products_count}</td
-                >
-                <td class="px-4 py-2 text-gray-500 dark:text-gray-400"
-                  >{col.updated_at.slice(0, 10)}</td
-                >
+                <td class="px-4 py-2 text-right text-gray-600 dark:text-gray-400">
+                  {col.products_count}
+                </td>
+                <td class="px-4 py-2 text-gray-500 dark:text-gray-400">
+                  {col.updated_at.slice(0, 10)}
+                </td>
               </tr>
             {/each}
           </tbody>

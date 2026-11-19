@@ -164,9 +164,9 @@
                     {entry.name}
                   </td>
                   <td class="px-3 py-2 text-gray-500 dark:text-gray-400">{entry.domain}</td>
-                  <td class="px-3 py-2 text-right tabular-nums"
-                    >{entry.products.toLocaleString()}</td
-                  >
+                  <td class="px-3 py-2 text-right tabular-nums">
+                    {entry.products.toLocaleString()}
+                  </td>
                   <td class="px-3 py-2 text-center">{entry.country}</td>
                   <td class="px-3 py-2 text-center">
                     <a

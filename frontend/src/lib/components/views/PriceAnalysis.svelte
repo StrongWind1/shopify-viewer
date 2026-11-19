@@ -187,8 +187,9 @@
           <li class="flex items-center gap-3 text-sm">
             <span
               class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold dark:bg-gray-800"
-              >{item.rank}</span
             >
+              {item.rank}
+            </span>
             <span class="flex-1 truncate text-slate-800 dark:text-slate-200">{item.title}</span>
             <span class="font-semibold">{formatPrice(item.price, currency)}</span>
           </li>
@@ -202,8 +203,9 @@
           <li class="flex items-center gap-3 text-sm">
             <span
               class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold dark:bg-gray-800"
-              >{item.rank}</span
             >
+              {item.rank}
+            </span>
             <span class="flex-1 truncate text-slate-800 dark:text-slate-200">{item.title}</span>
             <span class="font-semibold">{formatPrice(item.price, currency)}</span>
           </li>

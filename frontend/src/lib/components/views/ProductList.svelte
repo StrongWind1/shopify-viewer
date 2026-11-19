@@ -53,12 +53,12 @@
       />
     {:else if column.key === "originalPrice"}
       {#if row.originalPrice !== null}
-        <span class="text-gray-400 line-through"
-          ><PriceDisplay
+        <span class="text-gray-400 line-through">
+          <PriceDisplay
             price={row.originalPrice}
             {currency}
-          /></span
-        >
+          />
+        </span>
       {/if}
     {:else if column.key === "inStock"}
       <Badge
@@ -71,8 +71,9 @@
         target="_blank"
         rel="noopener"
         class="text-xs text-gray-500 hover:underline dark:text-gray-400"
-        >{row.url.split("/products/")[1]?.split("?")[0] ?? ""}</a
       >
+        {row.url.split("/products/")[1]?.split("?")[0] ?? ""}
+      </a>
     {:else if column.key === "weightGrams"}
       {row.weightGrams > 0 ? `${String(row.weightGrams)} g` : "—"}
     {:else if column.key === "createdAt"}

@@ -42,8 +42,10 @@
           href={row.url}
           target="_blank"
           rel="noopener"
-          class="text-blue-600 hover:underline dark:text-blue-400">{row.title}</a
+          class="text-blue-600 hover:underline dark:text-blue-400"
         >
+          {row.title}
+        </a>
       {:else if column.key === "price"}
         <PriceDisplay
           price={row.price}
@@ -59,8 +61,10 @@
           href={row.url}
           target="_blank"
           rel="noopener"
-          class="text-xs text-gray-500 hover:underline dark:text-gray-400">{row.handle}</a
+          class="text-xs text-gray-500 hover:underline dark:text-gray-400"
         >
+          {row.handle}
+        </a>
       {:else if column.key === "category"}
         {row.category}
       {/if}

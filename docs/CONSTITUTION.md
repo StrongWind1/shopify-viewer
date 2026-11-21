@@ -151,7 +151,7 @@ The worker in `/worker` follows the same TypeScript strictness. Additional const
 
 The `index.html` includes a CSP meta tag:
 
-```
+```text
 default-src 'none';
 base-uri 'self';
 form-action 'none';

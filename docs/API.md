@@ -205,7 +205,7 @@ Same schema as `/products.json` but scoped to a specific collection by its URL h
 
 ## Pagination Strategy
 
-```
+```text
 page = 1
 products = []
 loop:
@@ -232,7 +232,7 @@ No explicit rate-limit headers are returned (`X-RateLimit-*` or `Retry-After`). 
 
 The public `/products.json` endpoint does **not** include `Access-Control-Allow-Origin` headers. Cross-origin browser requests are blocked. Response headers include:
 
-```
+```text
 x-permitted-cross-domain-policies: none
 x-frame-options: DENY
 content-security-policy: block-all-mixed-content; frame-ancestors 'none'

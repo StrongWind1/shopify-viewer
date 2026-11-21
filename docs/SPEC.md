@@ -8,7 +8,7 @@ References: API.md for upstream data schema, DESIGN.md for architecture, CONSTIT
 
 The app has one global state machine governing the fetch lifecycle:
 
-```
+```text
                   ┌──────────┐
                   │   IDLE   │◀──────────────────────────────────┐
                   └────┬─────┘                                   │
@@ -455,13 +455,13 @@ Triggered by clicking a product image in the Card Grid view. Displays a fullscre
 
 Shopify CDN URLs follow the pattern:
 
-```
+```text
 https://cdn.shopify.com/s/files/1/XXXX/XXXX/files/image-name.jpg?v=NNNNN
 ```
 
 To get a resized thumbnail, insert the size before the extension:
 
-```
+```text
 https://cdn.shopify.com/s/files/1/XXXX/XXXX/files/image-name_400x400.jpg?v=NNNNN
 ```
 
@@ -816,13 +816,13 @@ Four download buttons in a 2x2 grid:
 
 **Product List CSV columns (same order as the view):**
 
-```
+```csv
 Category,Product,Option,Price,Original Price,In Stock,URL,Weight (g),Created
 ```
 
 **Product Summary CSV columns:**
 
-```
+```csv
 Category,Product,Price,In Stock,URL
 ```
 

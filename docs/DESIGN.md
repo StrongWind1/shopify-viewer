@@ -8,7 +8,7 @@ Users navigate to the app, enter a Shopify store URL, and immediately see produc
 
 ## Architecture
 
-```
+```text
 ┌─────────────────────────┐     ┌──────────────────────────────────┐     ┌──────────────────┐
 │   Browser (Frontend)    │────▶│  Cloudflare Worker (CORS Proxy)  │────▶│  Shopify Store    │
 │   Svelte 5 + Tailwind   │◀────│  shopify-viewer-proxy            │◀────│  /products.json   │
@@ -23,7 +23,7 @@ Shopify's public JSON endpoints do not return `Access-Control-Allow-Origin` head
 
 ### Monorepo Layout
 
-```
+```text
 shopify-viewer/
 ├── frontend/                  # Svelte 5 application
 │   ├── src/
@@ -274,7 +274,7 @@ Price snapshots are stored in IndexedDB (`shopify-viewer-history` database, `sna
 
 ## Component Architecture
 
-```
+```text
 App.svelte
 ├── Header.svelte              # App title, theme toggle, GitHub link
 ├── StoreInput.svelte          # URL input, recent stores dropdown, fetch button
@@ -304,7 +304,7 @@ App.svelte
 
 ### Request Flow
 
-```
+```text
 Browser → GET /api/products?store=lttstore.com&page=1&limit=250
        → Worker validates domain, constructs Shopify URL
        → Worker fetches https://www.lttstore.com/products.json?limit=250&page=1

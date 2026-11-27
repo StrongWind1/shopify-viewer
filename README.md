@@ -52,22 +52,6 @@ A link such as `https://strongwind.dev/shopify-viewer/?store=lttstore.com&view=c
 - **PWA manifest**: installable on mobile with app icons
 - **Accessibility**: ARIA roles and labels on all interactive elements, keyboard-navigable
 
-## Architecture
-
-```text
-Browser --> Cloudflare Worker (CORS proxy) --> Shopify Store /products.json
-```
-
-Shopify's public JSON endpoints don't include CORS headers. The Cloudflare Worker at `shopify-viewer-proxy.strongwind.workers.dev` proxies requests server-side, adds the appropriate headers, and caches responses for 5 minutes.
-
-| Component | Stack                                       |
-| --------- | ------------------------------------------- |
-| Frontend  | Svelte 5, TypeScript, Tailwind CSS v4, Vite |
-| Proxy     | Cloudflare Workers                          |
-| Icons     | `@lucide/svelte`                            |
-| Tests     | Vitest (unit), Playwright (e2e)             |
-| CI        | GitHub Actions                              |
-
 ## Development
 
 ```sh
@@ -77,8 +61,6 @@ make check      # Full CI gate: lint + typecheck + test + build
 make format     # Auto-format with Prettier
 make test       # Run unit + e2e tests
 ```
-
-Design notes, the functional spec, and the Shopify endpoint reference are in [docs/](docs/).
 
 ## Related tools
 
